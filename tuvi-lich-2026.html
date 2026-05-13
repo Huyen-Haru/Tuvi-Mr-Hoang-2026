@@ -70,7 +70,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 .sgreen{background:var(--cg);color:#fff}.sblue{background:var(--cb);color:#fff}
 .sgray{background:var(--cm);color:#ccc}.swarn{background:#c8960a;color:#fff}.sred{background:var(--cr);color:#fff}
 
-.main{padding:18px 18px 60px}
+.main{padding:18px 18px 60px;overflow-x:hidden}
 
 /* ── COMMON ── */
 .sec-hdr{font-family:'Noto Serif',serif;font-size:14px;font-weight:600;color:var(--gold);
@@ -255,6 +255,75 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 .legend{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--text3);margin-bottom:12px}
 .leg{display:flex;align-items:center;gap:4px}
 .leg-d{width:8px;height:8px;border-radius:2px}
+
+/* ── SOLAR CALENDAR (Google-style) ── */
+.sol-outer{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
+.sol-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;
+  background:var(--bg3);border-bottom:1px solid var(--border2)}
+.sol-nav-title{font-family:'Noto Serif',serif;font-size:18px;font-weight:600;color:var(--gold)}
+.sol-nav-btns{display:flex;align-items:center;gap:6px}
+.sol-nav-btn{width:32px;height:32px;border-radius:50%;background:transparent;
+  border:1px solid var(--border2);color:var(--text2);font-size:16px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s}
+.sol-nav-btn:hover{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+.sol-today-btn{padding:5px 13px;border-radius:16px;font-size:11px;font-weight:600;
+  border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .12s}
+.sol-today-btn:hover{background:var(--gold-dim);color:var(--gold)}
+
+.sol-dow{display:grid;grid-template-columns:repeat(7,1fr);background:var(--bg3);border-bottom:1px solid var(--border2)}
+.sol-dow div{text-align:center;padding:9px 4px;font-size:10.5px;font-weight:700;
+  color:var(--text3);letter-spacing:.3px}
+.sol-dow div.sun{color:#d4875a}
+
+.sol-grid{display:grid;grid-template-columns:repeat(7,1fr);border-top:none}
+.sol-cell{
+  border-right:1px solid var(--border2);border-bottom:1px solid var(--border2);
+  min-height:88px;padding:7px 8px 5px;cursor:pointer;
+  position:relative;transition:background .1s;
+  display:flex;flex-direction:column;gap:2px
+}
+.sol-cell:nth-child(7n){border-right:none}
+.sol-cell:hover:not(.sol-empty){background:var(--bg3)}
+.sol-cell.sol-empty{cursor:default;opacity:.2;background:var(--bg)}
+.sol-cell.sol-today .sol-day-num{
+  background:var(--gold);color:#000;border-radius:50%;
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px
+}
+.sol-cell.sol-sel{background:var(--gold-dim)!important;box-shadow:inset 0 0 0 2px var(--gold)}
+.sol-cell.sol-great{background:rgba(26,122,60,.13)}
+.sol-cell.sol-good{background:rgba(26,82,118,.12)}
+.sol-cell.sol-warn{background:rgba(125,68,0,.13)}
+.sol-cell.sol-bad{background:rgba(139,26,18,.12)}
+.sol-cell.sol-great:hover{background:rgba(26,122,60,.22)!important}
+.sol-cell.sol-good:hover{background:rgba(26,82,118,.22)!important}
+.sol-cell.sol-warn:hover{background:rgba(125,68,0,.22)!important}
+.sol-cell.sol-bad:hover{background:rgba(139,26,18,.22)!important}
+
+.sol-day-num{font-size:14px;font-weight:700;line-height:1;
+  color:var(--text);min-width:22px;text-align:center;padding:2px 3px}
+.sol-day-num.sun{color:#d4875a}
+.sol-lunar{font-size:9.5px;color:var(--gold);font-weight:700;
+  background:rgba(200,150,10,.1);border-radius:4px;padding:1px 5px;
+  display:inline-block;width:fit-content;max-width:100%}
+.sol-cc{font-size:9px;color:var(--text3);line-height:1.3}
+.sol-dot-row{display:flex;gap:2px;margin-top:auto;padding-top:3px}
+.sol-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sol-rating-bar{position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0}
+
+/* Month strip picker */
+.sol-month-strip{display:flex;gap:3px;flex-wrap:wrap;padding:10px 14px;
+  background:var(--bg3);border-bottom:1px solid var(--border2)}
+.sol-ms{padding:4px 10px;border-radius:14px;font-size:11px;font-weight:600;
+  border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;transition:all .12s}
+.sol-ms.on{background:var(--gold);color:#000;border-color:var(--gold)}
+.sol-ms:hover:not(.on){background:var(--gold-dim);color:var(--gold);border-color:var(--border)}
+
+/* Solar summary bar */
+.sol-sumbar{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;
+  background:var(--bg2);border-bottom:1px solid var(--border2);align-items:center}
+.sol-sum-chip{display:flex;align-items:center;gap:4px;font-size:11px;padding:3px 8px;
+  border-radius:12px;font-weight:600;background:var(--bg3);border:1px solid var(--border2)}
 </style>
 </head>
 <body>
@@ -613,7 +682,7 @@ function renderYear(){
 }
 
 // ══════════════════════════════════════════════════════════════
-// VIEW: SOLAR CALENDAR (Lịch Dương)
+// VIEW: SOLAR CALENDAR (Lịch Dương — Google Calendar style)
 // ══════════════════════════════════════════════════════════════
 function renderSolarCal(){
   var solM=currentSolarMonth;
@@ -622,96 +691,126 @@ function renderSolarCal(){
   var days=getSolarDays(solM);
   var cnt={great:0,good:0,mid:0,warn:0,bad:0};
   days.forEach(function(d){cnt[d.r]++;});
+  var today=new Date(); var todayM=today.getMonth(),todayD=today.getDate();
 
-  var h='';
-  // Header
-  h+='<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">';
-  h+='<div>';
-  h+='<div style="font-family:Noto Serif,serif;font-size:19px;color:var(--gold);margin-bottom:4px">☀ '+SOL_M_NAME[solM]+' Dương Lịch 2026</div>';
-  h+='<div style="font-size:11.5px;color:var(--text3)">1/'+(solM+1)+'–'+totalDays+'/'+(solM+1)+'/2026 · Dương lịch → Âm lịch · '+days.length+' ngày có dữ liệu tử vi</div>';
-  h+='</div>';
-  h+='<div style="display:flex;gap:6px;flex-wrap:wrap">';
-  if(solM>0) h+='<button onclick="goSolarMonth('+(solM-1)+')" style="padding:5px 11px;border-radius:16px;font-size:11px;font-weight:600;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">← T'+solM+'</button>';
-  if(solM<11) h+='<button onclick="goSolarMonth('+(solM+1)+')" style="padding:5px 11px;border-radius:16px;font-size:11px;font-weight:600;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">T'+(solM+2)+' DL →</button>';
-  h+='</div></div>';
-
-  // Quick month picker strip
-  h+='<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px">';
-  for(var i=0;i<12;i++){
-    var act=i===solM;
-    h+='<button onclick="goSolarMonth('+i+')" style="padding:3px 9px;border-radius:14px;font-size:11px;font-weight:600;border:1px solid '+(act?'var(--gold)':'var(--border2)')+';background:'+(act?'var(--gold-dim)':'transparent')+';color:'+(act?'var(--gold)':'var(--text3)')+'">T'+(i+1)+'</button>';
-  }
-  h+='</div>';
-
-  // Stats
-  h+='<div class="stats5" style="margin-bottom:14px">';
-  [{r:'great',l:'⭐ Rất tốt'},{r:'good',l:'✅ Tốt'},{r:'mid',l:'〰 Bình'},{r:'warn',l:'⚠ Chú ý'},{r:'bad',l:'🔴 Xấu'}].forEach(function(x){
-    h+='<div class="s5"><div class="s5-n" style="color:'+rateColor(x.r)+'">'+cnt[x.r]+'</div><div class="s5-l">'+x.l+'</div></div>';
-  });
-  h+='</div>';
-
-  // Info box — which lunar months overlap
+  // Lunar months in this solar month
   var lunarSet={};
   days.forEach(function(d){lunarSet[d.m]=true;});
   var lunarNums=Object.keys(lunarSet).map(Number).sort(function(a,b){return a-b;});
-  h+='<div style="background:var(--bg3);border:1px solid var(--border2);border-left:3px solid var(--gold);border-radius:8px;padding:9px 13px;font-size:11.5px;color:var(--text2);margin-bottom:14px">';
-  h+='<strong style="color:var(--text)">☀→🌙 Quy đổi:</strong> '+SOL_M_NAME[solM]+'/2026 Dương tương ứng Tháng Âm ';
-  h+=lunarNums.map(function(n){return '<strong style="color:var(--gold)">'+n+' ('+M_NAME[n-1]+')</strong>';}).join(' + ');
+
+  var h='';
+  h+='<div style="margin:-18px -18px 0;padding-bottom:0" id="sol-cal-root">';
+  h+='<div class="sol-outer">';
+
+  // ── Month strip picker
+  h+='<div class="sol-month-strip">';
+  for(var i=0;i<12;i++){
+    h+='<button class="sol-ms'+(i===solM?' on':'')+'" onclick="goSolarMonth('+i+')">T'+(i+1)+'</button>';
+  }
   h+='</div>';
 
-  // Legend
-  h+='<div class="legend">';
-  [{c:'#1a7a3c',l:'⭐ Rất tốt'},{c:'#1a5276',l:'✅ Tốt'},{c:'#3a3530',l:'〰 Bình'},{c:'#7d4400',l:'⚠ Chú ý'},{c:'#8b1a12',l:'🔴 Xấu'}].forEach(function(x){
-    h+='<div class="leg"><div class="leg-d" style="background:'+x.c+';opacity:.7"></div>'+x.l+'</div>';
-  });
+  // ── Navigation header
+  h+='<div class="sol-nav">';
+  h+='<div class="sol-nav-title">Tháng '+(solM+1)+' 2026</div>';
+  h+='<div class="sol-nav-btns">';
+  h+='<button class="sol-today-btn" onclick="goSolarMonth('+(new Date()).getMonth()+')">Hôm nay</button>';
+  h+='<button class="sol-nav-btn" onclick="goSolarMonth(Math.max(0,'+(solM-1)+'))">‹</button>';
+  h+='<button class="sol-nav-btn" onclick="goSolarMonth(Math.min(11,'+(solM+1)+'))">›</button>';
+  h+='</div></div>';
+
+  // ── Summary bar
+  h+='<div class="sol-sumbar">';
+  h+='<span style="font-size:11px;color:var(--text3);font-weight:600">1/'+(solM+1)+' – '+totalDays+'/'+(solM+1)+'/2026</span>';
+  h+='<span style="font-size:10px;color:var(--text3)">☀↔🌙 Tháng Âm: ';
+  h+=lunarNums.map(function(n){return '<strong style="color:var(--gold)">'+n+' ('+M_NAME[n-1]+')</strong>';}).join(', ');
+  h+='</span>';
+  var sumItems=[{r:'great',e:'⭐',c:'#2ecc71'},{r:'good',e:'✅',c:'#5dade2'},{r:'warn',e:'⚠',c:'#f39c12'},{r:'bad',e:'🔴',c:'#e74c3c'}];
+  sumItems.forEach(function(x){if(cnt[x.r]){h+='<span class="sol-sum-chip"><span style="color:'+x.c+'">'+x.e+'</span>'+cnt[x.r]+'</span>';}});
   h+='</div>';
 
-  // Calendar
-  h+='<div class="cal-wrap"><div class="cal-dow">';
-  ['T2','T3','T4','T5','T6','T7','CN'].forEach(function(d,i){h+='<div'+(i===6?' style="color:#d4875a"':'')+'>'+d+'</div>';});
-  h+='</div><div class="cal-grid">';
+  // ── Days of week header
+  h+='<div class="sol-dow">';
+  ['T2','T3','T4','T5','T6','T7','CN'].forEach(function(d,i){h+='<div class="'+(i===6?'sun':'')+'">'+(i===6?'<span style="color:#d4875a">':'')+d+(i===6?'</span>':'')+'</div>';});
+  h+='</div>';
+
+  // ── Calendar grid
+  h+='<div class="sol-grid">';
   var pad=(firstDay.getDay()===0?6:firstDay.getDay()-1);
-  for(var p=0;p<pad;p++) h+='<div class="dc empty"></div>';
+  // Previous month filler cells
+  for(var p=0;p<pad;p++){
+    var prevMonthDays=new Date(2026,solM,0).getDate();
+    var prevD=prevMonthDays-pad+p+1;
+    h+='<div class="sol-cell sol-empty"><div class="sol-day-num">'+prevD+'</div></div>';
+  }
+
   for(var solD=1;solD<=totalDays;solD++){
     var day=lookupBySolar(solM,solD);
     var curDate=new Date(2026,solM,solD);
-    var isWknd=curDate.getDay()===0||curDate.getDay()===6;
-    if(day){
-      var sel=(selectedDay&&selectedDay.m===day.m&&selectedDay.d===day.d)?' sel':'';
-      var wkClass=isWknd?' wknd':'';
-      h+='<div class="dc r-'+day.r+sel+wkClass+'" onclick="goDay(lookupBySolar('+solM+','+solD+'))" title="'+solD+'/'+(solM+1)+'/2026 (DL) = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+' · '+rateLabel(day.r)+'">';
-      h+='<div class="dc-d"'+(isWknd?' style="color:#d4875a"':'')+'>'+solD+'</div>';
-      h+='<div style="font-size:8.5px;color:var(--gold);font-weight:700;line-height:1.2">'+day.d+'/'+day.m+'🌙</div>';
-      h+='<div class="dc-cc">'+day.cc.chi+'</div>';
-      h+='<div class="dc-dot dot-'+day.r+'"></div>';
-      h+='</div>';
-    } else {
-      h+='<div class="dc" style="opacity:.22;cursor:default">';
-      h+='<div class="dc-d"'+(isWknd?' style="color:#d4875a"':'')+'>'+solD+'</div>';
-      h+='<div style="font-size:8px;color:var(--text3)">N/A</div>';
-      h+='</div>';
-    }
-  }
-  h+='</div></div>';
+    var dow=curDate.getDay(); // 0=Sun
+    var isSun=dow===0;
+    var isToday=(solM===todayM&&solD===todayD&&2026===today.getFullYear());
+    var isSel=day&&selectedDay&&selectedDay.m===day.m&&selectedDay.d===day.d;
 
-  // Best days this solar month
+    var cellCls='sol-cell';
+    if(day) cellCls+=' sol-'+day.r;
+    if(isToday) cellCls+=' sol-today';
+    if(isSel) cellCls+=' sol-sel';
+
+    var onclick=day?'goDay(lookupBySolar('+solM+','+solD+'))':'';
+    var title=day?(solD+'/'+(solM+1)+'/2026 = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+' · '+rateLabel(day.r)):(solD+'/'+(solM+1)+'/2026 – chưa có dữ liệu');
+
+    h+='<div class="'+cellCls+'"'+(onclick?' onclick="'+onclick+'"':'')+' title="'+title+'">';
+
+    // Day number
+    if(isToday){
+      h+='<div class="sol-day-num'+(isSun?' sun':'')+'"><div style="background:var(--gold);color:#000;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin:0 auto">'+solD+'</div></div>';
+    } else {
+      h+='<div class="sol-day-num'+(isSun?' sun':'')+'" style="'+(isSun?'color:#d4875a':'')+'">'+solD+'</div>';
+    }
+
+    if(day){
+      // Lunar date badge
+      h+='<div class="sol-lunar">'+day.d+'/'+day.m+'🌙</div>';
+      // Can-Chi
+      h+='<div class="sol-cc">'+day.cc.can+' '+day.cc.chi+'</div>';
+      // Rating indicator bar at bottom
+      h+='<div class="sol-rating-bar" style="background:'+rateColor(day.r)+';opacity:.7"></div>';
+    } else {
+      h+='<div style="font-size:8.5px;color:var(--text3);margin-top:3px">Trước TG</div>';
+    }
+    h+='</div>';
+  }
+
+  // Next month filler
+  var lastDow=new Date(2026,solM,totalDays).getDay();
+  var trailing=(lastDow===0)?0:(7-lastDow);
+  for(var nf=1;nf<=trailing;nf++){
+    h+='<div class="sol-cell sol-empty"><div class="sol-day-num">'+nf+'</div></div>';
+  }
+
+  h+='</div>'; // sol-grid
+  h+='</div>'; // sol-outer
+
+  // ── Best days section below calendar
   var bestDays=days.filter(function(d){return d.r==='great'||d.r==='good';});
   if(bestDays.length){
-    h+='<div class="divider"></div>';
-    h+='<div class="sec-hdr">⭐ Ngày Tốt Nhất Trong Tháng '+(solM+1)+' Dương</div>';
-    h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">';
-    bestDays.forEach(function(day){
-      var dl=day.dl;
-      h+='<div onclick="goDay(lookupBySolar('+solM+','+dl.getDate()+'))" style="background:'+rateColor(day.r)+'20;border:1px solid '+rateColor(day.r)+'60;border-radius:8px;padding:7px 10px;cursor:pointer;text-align:center;min-width:80px;transition:all .12s" onmouseover="this.style.opacity=\'.8\'" onmouseout="this.style.opacity=\'1\'">';
-      h+='<div style="font-size:15px;font-weight:700;color:var(--text)">'+dl.getDate()+'</div>';
-      h+='<div style="font-size:9px;color:var(--text3)">'+(dl.getMonth()+1)+'/2026 '+DOW_VN[dl.getDay()]+'</div>';
-      h+='<div style="font-size:8.5px;color:var(--gold);font-weight:600">'+day.d+'/'+day.m+'🌙</div>';
-      h+='<div style="font-size:9px;font-weight:700;color:'+rateColor(day.r)+';margin-top:2px">'+rateLabel(day.r).split(' ').slice(0,2).join(' ')+'</div>';
+    h+='<div class="divider" style="margin-top:20px"></div>';
+    h+='<div class="sec-hdr">⭐ Ngày Tốt Trong Tháng '+(solM+1)+' Dương Lịch</div>';
+    h+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;margin-bottom:12px">';
+    bestDays.forEach(function(d2){
+      var dl=d2.dl;
+      var clr=rateColor(d2.r);
+      h+='<div onclick="goDay(lookupBySolar('+solM+','+dl.getDate()+'))" style="background:'+clr+'18;border:1px solid '+clr+'50;border-radius:9px;padding:9px 6px 7px;cursor:pointer;text-align:center;transition:all .12s" onmouseover="this.style.background=\''+clr+'30\'" onmouseout="this.style.background=\''+clr+'18\'">';
+      h+='<div style="font-size:22px;font-weight:700;color:var(--text);line-height:1">'+dl.getDate()+'</div>';
+      h+='<div style="font-size:9px;color:var(--text3);margin-top:1px">'+(dl.getMonth()+1)+'/2026 '+DOW_VN[dl.getDay()]+'</div>';
+      h+='<div style="font-size:9.5px;color:var(--gold);font-weight:600;margin-top:3px">'+d2.d+'/'+d2.m+'🌙</div>';
+      h+='<div style="font-size:9.5px;font-weight:700;color:'+clr+';margin-top:3px">'+rateLabel(d2.r).replace('⭐ ','⭐').replace('✅ ','✅')+'</div>';
       h+='</div>';
     });
     h+='</div>';
   }
 
+  h+='</div>'; // sol-cal-root wrapper
   document.getElementById('main').innerHTML=h;
 }
 
