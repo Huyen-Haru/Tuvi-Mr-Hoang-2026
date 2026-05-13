@@ -256,6 +256,57 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 .leg{display:flex;align-items:center;gap:4px}
 .leg-d{width:8px;height:8px;border-radius:2px}
 
+/* ── TODAY STRIP (#4) ── */
+.today-strip{background:linear-gradient(135deg,var(--bg3) 0%,rgba(200,150,10,.08) 100%);
+  border-bottom:2px solid var(--gold);padding:10px 18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;cursor:pointer;transition:opacity .15s}
+.today-strip:hover{opacity:.92}
+.ts-label{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--gold);background:var(--gold-dim);padding:2px 7px;border-radius:8px;white-space:nowrap}
+.ts-dates{display:flex;flex-direction:column;gap:1px}
+.ts-dl{font-family:'Noto Serif',serif;font-size:17px;font-weight:700;color:var(--text);line-height:1}
+.ts-al{font-size:10.5px;color:var(--gold);font-weight:600}
+.ts-cc{font-size:11px;color:var(--text2)}
+.ts-divider{width:1px;height:36px;background:var(--border);flex-shrink:0}
+.ts-truc{display:flex;flex-direction:column;gap:2px}
+.ts-badge{padding:2px 8px;border-radius:10px;font-size:10.5px;font-weight:700;white-space:nowrap}
+.ts-hoang{background:rgba(46,204,113,.2);border:1px solid rgba(46,204,113,.4);color:#5dbd77}
+.ts-hac{background:rgba(139,26,18,.2);border:1px solid rgba(139,26,18,.4);color:#ff8a7a}
+.ts-truc-name{background:var(--bg2);border:1px solid var(--border2);color:var(--text2)}
+.ts-cungs{display:flex;flex-wrap:wrap;gap:5px;flex:1}
+.ts-cung-chip{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px}
+.ts-main-rating{margin-left:auto;text-align:center;flex-shrink:0}
+.ts-rating-big{font-family:'Noto Serif',serif;font-size:14px;font-weight:700;padding:5px 12px;border-radius:8px}
+.ts-nendo{font-size:10.5px;color:var(--text2);line-height:1.5;flex:1;min-width:150px}
+.ts-btn{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:700;
+  background:var(--gold);color:#000;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+/* ── SAO NGÀY — 12 Trực / 12 Thần (#7) ── */
+.saongay-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:8px;
+  padding:8px 12px;margin-bottom:12px}
+.sn-item{display:flex;flex-direction:column;align-items:center;gap:2px}
+.sn-lbl{font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.sn-val{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:8px}
+.sn-hoang{background:rgba(46,204,113,.18);color:#5dbd77;border:1px solid rgba(46,204,113,.3)}
+.sn-hac{background:rgba(139,26,18,.18);color:#ff8a7a;border:1px solid rgba(139,26,18,.3)}
+.sn-truc{background:var(--gold-dim);color:var(--gold);border:1px solid var(--border)}
+.sn-truc-bad{background:rgba(139,26,18,.12);color:#ff8a7a;border:1px solid rgba(139,26,18,.25)}
+.sn-truc-ok{background:rgba(58,53,48,.4);color:var(--text2);border:1px solid var(--border2)}
+.sn-divider{width:1px;height:30px;background:var(--border2)}
+
+/* ── ACTIVITY FILTER (#3) — CSS ── */
+.act-filter{display:flex;flex-wrap:wrap;gap:5px;padding:10px 14px;
+  background:var(--bg3);border-bottom:1px solid var(--border2);align-items:center}
+.act-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;
+  letter-spacing:.4px;margin-right:4px;white-space:nowrap}
+.act-btn{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:600;
+  border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;transition:all .12s}
+.act-btn.on{color:#000;border-color:transparent}
+.act-btn:hover:not(.on){background:var(--gold-dim);color:var(--gold);border-color:var(--border)}
+.dc.act-match{box-shadow:inset 0 0 0 2px var(--gold);z-index:3}
+.dc.act-dim{opacity:.25;pointer-events:none}
+
 /* ── SOLAR CALENDAR (Google-style) ── */
 .sol-outer{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
 .sol-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;
@@ -324,6 +375,8 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
   background:var(--bg2);border-bottom:1px solid var(--border2);align-items:center}
 .sol-sum-chip{display:flex;align-items:center;gap:4px;font-size:11px;padding:3px 8px;
   border-radius:12px;font-weight:600;background:var(--bg3);border:1px solid var(--border2)}
+.sol-act-match{box-shadow:inset 0 0 0 2px var(--gold)!important;z-index:3}
+.sol-act-dim{opacity:.18;pointer-events:none}
 </style>
 </head>
 <body>
@@ -344,6 +397,9 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 <div class="bc" id="bc">
   <span class="bc-item active" onclick="goYear()">🏠 Cả Năm 2026</span>
 </div>
+
+<!-- TODAY STRIP (#4) -->
+<div class="today-strip" id="today-strip" onclick="goTodayDay()"></div>
 
 <!-- VIEW TABS -->
 <div class="view-tabs">
@@ -450,6 +506,100 @@ function rateDay(nc,ln){
 function rateLabel(r){return r==='great'?'⭐ Rất Tốt':r==='good'?'✅ Tốt':r==='mid'?'〰 Trung Bình':r==='warn'?'⚠ Cẩn Thận':'🔴 Xấu';}
 function rateBadge(r){return'bg-'+r;}
 function rateColor(r){return r==='great'?'#2ecc71':r==='good'?'#5dade2':r==='mid'?'#636363':r==='warn'?'#f39c12':'#e74c3c';}
+function rateDayScore(nc,ln){
+  var t=0;
+  CUNGS.forEach(function(c){var r=rateC(c,nc,ln);t+=r==='great'?2:r==='good'?1:r==='mid'?0:r==='warn'?-1:-2;});
+  return t; // raw numeric score (range ~-24 to +24)
+}
+
+// ══════════════════════════════════════════════════════════════
+// #7 — 12 Trực & 12 Thần (Sao Ngày)
+// ══════════════════════════════════════════════════════════════
+var TRUC=['Kiến','Trừ','Mãn','Bình','Định','Chấp','Phá','Nguy','Thành','Thu','Khai','Bế'];
+var TRUC_TYPE={Kiến:'good',Trừ:'good',Mãn:'good',Bình:'good',Định:'good',Thành:'good',Khai:'good',
+               Chấp:'ok',Thu:'ok',Phá:'bad',Nguy:'bad',Bế:'bad'};
+var TRUC_DESC={
+  Kiến:'Ngày khởi sự, mở đầu — tốt ký kết, ra mắt',
+  Trừ:'Ngày trừ bỏ cũ — tốt dọn dẹp, kết thúc việc cũ',
+  Mãn:'Ngày viên mãn — tốt thu hoạch, nhận tiền',
+  Bình:'Ngày bình ổn — phù hợp công việc thường lệ',
+  Định:'Ngày định vị — tốt ký hợp đồng dài hạn',
+  Chấp:'Ngày chấp hành — cẩn thận tranh chấp',
+  Phá:'Ngày phá — tránh quyết định lớn, ký kết',
+  Nguy:'Ngày nguy — cẩn thận tai nạn, sức khỏe',
+  Thành:'Ngày thành tựu — rất tốt cho mọi việc',
+  Thu:'Ngày thu — trung bình, không xấu không tốt',
+  Khai:'Ngày khai thông — tốt khởi đầu, gặp gỡ',
+  Bế:'Ngày bế tắc — tránh mở đầu dự án mới'
+};
+var THAN=['Thanh Long','Minh Đường','Thiên Hình','Chu Tước','Kim Quỹ','Bảo Quang',
+          'Bạch Hổ','Ngọc Đường','Thiên Lao','Huyền Vũ','Tư Mệnh','Câu Trận'];
+var HOANG_DAO_SET={'Thanh Long':1,'Minh Đường':1,'Kim Quỹ':1,'Bảo Quang':1,'Ngọc Đường':1,'Tư Mệnh':1};
+var THAN_BASE=[0,6,0,6,0,6,0,6,0,6,0,6]; // offset by lunar month index 0-11
+
+function getTruc(dayChiIdx, lunarMonthIdx){
+  var lnIdx=CHI_IDX[LN[lunarMonthIdx]];
+  return TRUC[(dayChiIdx-lnIdx+12)%12];
+}
+function getThan(dayChiIdx, lunarMonthIdx){
+  return THAN[(dayChiIdx-THAN_BASE[lunarMonthIdx]+12)%12];
+}
+function isHoangDao(thanName){return !!HOANG_DAO_SET[thanName];}
+
+// ══════════════════════════════════════════════════════════════
+// #5 — Family Synastry Data
+// ══════════════════════════════════════════════════════════════
+var FAMILY=[
+  {name:'Vợ Huyền',    icon:'❤️', year:1990, chi:'Ngọ', chi_idx:6},
+  {name:'Con Thế Lâm', icon:'👦', year:2016, chi:'Thân', chi_idx:8},
+  {name:'Con Huyền Vy',icon:'👧', year:2022, chi:'Dần', chi_idx:2},
+  {name:'Bố Hòa',      icon:'👴', year:1954, chi:'Ngọ', chi_idx:6},
+  {name:'Mẹ Hằng',     icon:'👩', year:1962, chi:'Dần', chi_idx:2},
+  {name:'Chị Trang',   icon:'🌸', year:1985, chi:'Sửu', chi_idx:1}
+];
+function familyDayRating(dayChiIdx, memberChiIdx){
+  var dchi=CHI[dayChiIdx],mchi=CHI[memberChiIdx];
+  if(dchi===mchi) return{r:'great',txt:'Ngày kích thẳng — rất thuận'};
+  if(isXung(dchi,mchi)) return{r:'bad',txt:'Xung ngày — cần chú ý'};
+  if(isTH(dchi,mchi)) return{r:'good',txt:'Tam hợp — hài hòa'};
+  if(LUC_HOP[dchi]===mchi) return{r:'good',txt:'Lục hợp — thuận lợi'};
+  return{r:'mid',txt:'Bình thường'};
+}
+
+// ══════════════════════════════════════════════════════════════
+// #3 — Activity Smart Filter
+// ══════════════════════════════════════════════════════════════
+var ACT_TYPES=[
+  {id:'all',    label:'Tất cả',       color:'#c8960a', cungs:[]},
+  {id:'kyHD',   label:'📝 Ký HĐ',    color:'#2ecc71', cungs:['Quan Lộc','Tài Bạch']},
+  {id:'gapDT',  label:'🤝 Gặp đối tác',color:'#5dade2',cungs:['Quan Lộc','Thiên Di']},
+  {id:'congTac',label:'✈ Công tác',  color:'#9b59b6', cungs:['Thiên Di','Tật Ách']},
+  {id:'hopNB',  label:'🏢 Họp NB',   color:'#e67e22', cungs:['Nô Bộc']},
+  {id:'suckHoe',label:'💊 Sức khỏe', color:'#1abc9c', cungs:['Tật Ách','Phúc Đức']},
+  {id:'giadinh',label:'🏠 Gia đình', color:'#e74c3c', cungs:['Phu Thê','Tử Tức','Phúc Đức']},
+  {id:'quyetDinh',label:'⚡ Quyết định',color:'#f39c12',cungs:['Mệnh','Quan Lộc']},
+  {id:'thuTien',label:'💰 Thu tiền', color:'#2ecc71', cungs:['Tài Bạch']}
+];
+var currentActivity='all';
+
+function activityMatchDay(day, actId){
+  if(actId==='all') return true;
+  var act=ACT_TYPES.find(function(a){return a.id===actId;});
+  if(!act||!act.cungs.length) return true;
+  var ln=LN[day.m-1];
+  var ok=true;
+  act.cungs.forEach(function(cn){
+    var cung=CUNGS.find(function(c){return c.ten===cn;});
+    if(cung){var r=rateC(cung,day.cc.chi,ln);if(r==='bad'||r==='warn')ok=false;}
+  });
+  // At least one key cung must be good/great
+  var hasGood=false;
+  act.cungs.forEach(function(cn){
+    var cung=CUNGS.find(function(c){return c.ten===cn;});
+    if(cung){var r=rateC(cung,day.cc.chi,ln);if(r==='great'||r==='good')hasGood=true;}
+  });
+  return ok&&hasGood;
+}
 
 // Pre-compute all days
 var ALL=[];
@@ -519,6 +669,52 @@ var solarMode=false, currentSolarMonth=new Date().getMonth();
 // ══════════════════════════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════════════════════════
+function goTodayDay(){
+  var now=new Date();
+  var found=ALL.find(function(d){return d.dl.getDate()===now.getDate()&&d.dl.getMonth()===now.getMonth();});
+  if(found) goDay(found);
+}
+
+function renderTodayCard(){
+  var strip=document.getElementById('today-strip');
+  if(!strip) return;
+  var now=new Date();
+  var today=ALL.find(function(d){return d.dl.getDate()===now.getDate()&&d.dl.getMonth()===now.getMonth();});
+  if(!today){strip.style.display='none';return;}
+  strip.style.display='flex';
+  var mi=today.m-1, ln=LN[mi], nc=today.cc.chi;
+  var rc=today.r, sc=rateColor(rc);
+  var dayChiIdx=CHI_IDX[nc];
+  var truc=getTruc(dayChiIdx,mi), than=getThan(dayChiIdx,mi);
+  var isHD=isHoangDao(than);
+  var best=[],warn=[];
+  CUNGS.forEach(function(c){var r=rateC(c,nc,ln);
+    if(r==='great') best.push({t:c.ten,i:c.icon,r:'great'});
+    else if(r==='good') best.push({t:c.ten,i:c.icon,r:'good'});
+    else if(r==='bad') warn.push({t:c.ten,i:c.icon});
+  });
+  var dl=today.dl;
+  var h='<div class="ts-label">HÔM NAY</div>';
+  h+='<div class="ts-dates">';
+  h+='<div class="ts-dl">'+dl.getDate()+'/'+(dl.getMonth()+1)+'/2026 <span style="font-size:11px;color:var(--text3)">'+DOW_VN[dl.getDay()]+'</span></div>';
+  h+='<div class="ts-al">Ngày '+today.d+'/'+today.m+' Âm · '+today.cc.can+' '+today.cc.chi+'</div>';
+  h+='</div>';
+  h+='<div class="ts-divider"></div>';
+  h+='<div class="ts-truc">';
+  h+='<span class="ts-badge '+(TRUC_TYPE[truc]==='good'?'ts-hoang':TRUC_TYPE[truc]==='bad'?'ts-hac':'ts-truc-name')+'">'+truc+'</span>';
+  h+='<span class="ts-badge '+(isHD?'ts-hoang':'ts-hac')+'" style="margin-top:2px">'+(isHD?'☀ Hoàng Đạo':'🌑 Hắc Đạo')+'·'+than+'</span>';
+  h+='</div>';
+  h+='<div class="ts-divider"></div>';
+  h+='<div class="ts-cungs">';
+  best.slice(0,3).forEach(function(c){h+='<span class="ts-cung-chip" style="background:'+rateColor(c.r)+'20;border:1px solid '+rateColor(c.r)+'50;color:'+rateColor(c.r)+'">'+c.i+' '+c.t+'</span>';});
+  if(warn.length) warn.slice(0,2).forEach(function(c){h+='<span class="ts-cung-chip" style="background:#e74c3c18;border:1px solid #e74c3c40;color:#ff8a7a">⚠ '+c.t+'</span>';});
+  h+='</div>';
+  h+='<div class="ts-nendo">✅ '+getNen(best.length?best[0].t:'Mệnh')+'</div>';
+  h+='<div class="ts-main-rating"><span class="ts-rating-big badge '+rateBadge(rc)+'" style="display:block">'+rateLabel(rc)+'</span></div>';
+  h+='<button class="ts-btn" onclick="event.stopPropagation();goTodayDay()">Chi tiết →</button>';
+  strip.innerHTML=h;
+}
+
 function goYear(){solarMode=false;view='year';selectedDay=null;render();}
 function goMonth(m){solarMode=false;currentMonth=m;currentWeek=0;selectedDay=null;view='month';render();}
 function goWeek(w){currentWeek=w;view='week';render();}
@@ -740,6 +936,15 @@ function renderSolarCal(){
   sumItems.forEach(function(x){if(cnt[x.r]){h+='<span class="sol-sum-chip"><span style="color:'+x.c+'">'+x.e+'</span>'+cnt[x.r]+'</span>';}});
   h+='</div>';
 
+  // ── Activity filter strip
+  h+='<div class="act-filter">';
+  h+='<span class="act-lbl">Lọc việc:</span>';
+  ACT_TYPES.forEach(function(a){
+    var on=currentActivity===a.id;
+    h+='<button class="act-btn'+(on?' on':'')+'" style="'+(on?'background:'+a.color+';':'')+';" onclick="setActivity(\''+a.id+'\')">'+a.label+'</button>';
+  });
+  h+='</div>';
+
   // ── Days of week header
   h+='<div class="sol-dow">';
   ['T2','T3','T4','T5','T6','T7','CN'].forEach(function(d,i){h+='<div class="'+(i===6?'sun':'')+'">'+(i===6?'<span style="color:#d4875a">':'')+d+(i===6?'</span>':'')+'</div>';});
@@ -763,10 +968,13 @@ function renderSolarCal(){
     var isToday=(solM===todayM&&solD===todayD&&2026===today.getFullYear());
     var isSel=day&&selectedDay&&selectedDay.m===day.m&&selectedDay.d===day.d;
 
+    var actOk=day?activityMatchDay(day,currentActivity):false;
     var cellCls='sol-cell';
     if(day) cellCls+=' sol-'+day.r;
     if(isToday) cellCls+=' sol-today';
     if(isSel) cellCls+=' sol-sel';
+    if(currentActivity!=='all'&&day&&actOk) cellCls+=' sol-act-match';
+    if(currentActivity!=='all'&&day&&!actOk) cellCls+=' sol-act-dim';
 
     var onclick=day?'goDay(lookupBySolar('+solM+','+solD+'))':'';
     var title=day?(solD+'/'+(solM+1)+'/2026 = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+' · '+rateLabel(day.r)):(solD+'/'+(solM+1)+'/2026 – chưa có dữ liệu');
@@ -970,6 +1178,15 @@ function renderMonth(){
   h+='<div class="divider"></div>';
 
   // ── Calendar ──
+  // Activity filter bar (#3)
+  h+='<div class="act-filter">';
+  h+='<span class="act-lbl">Việc làm:</span>';
+  ACT_TYPES.forEach(function(a){
+    var on=currentActivity===a.id;
+    h+='<button class="act-btn'+(on?' on':'')+'" style="'+(on?'background:'+a.color+';':'')+';" onclick="setActivity(\''+a.id+'\')">'+a.label+'</button>';
+  });
+  h+='</div>';
+
   h+='<div class="sec-hdr">📅 Lịch Tháng — Nhấn ngày để xem 12 cung</div>';
   h+='<div class="fbar"><span class="fbar-lbl">Lọc:</span>';
   ['all','great','good','warn','bad'].forEach(function(f){
@@ -990,11 +1207,13 @@ function renderMonth(){
   for(var p=0;p<pad2;p++) h+='<div class="dc empty"></div>';
   days.forEach(function(day){
     var vis=filterMode==='all'||filterMode===day.r;
+    var actMatch=activityMatchDay(day,currentActivity);
     var sel=(selectedDay&&selectedDay.m===day.m&&selectedDay.d===day.d)?' sel':'';
     var wknd=(day.dl.getDay()===0||day.dl.getDay()===6)?' wknd':'';
     var noshow=vis?'':' no-show';
+    var actCls=(currentActivity!=='all'&&!actMatch)?' act-dim':(currentActivity!=='all'&&actMatch)?' act-match':'';
     var dl2=day.dl;
-    h+='<div class="dc r-'+day.r+sel+wknd+noshow+'" onclick="goDay(getDay('+day.m+','+day.d+'))" title="'+dl2.getDate()+'/'+(dl2.getMonth()+1)+'/2026 (DL) = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+'">';
+    h+='<div class="dc r-'+day.r+sel+wknd+noshow+actCls+'" onclick="goDay(getDay('+day.m+','+day.d+'))" title="'+dl2.getDate()+'/'+(dl2.getMonth()+1)+'/2026 (DL) = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+'">';
     h+='<div class="dc-d">'+day.d+'</div>';
     h+='<div style="font-size:8px;color:var(--gold);font-weight:600;line-height:1.2">'+dlStr(day.dl)+' DL</div>';
     h+='<div class="dc-cc">'+day.cc.chi+'</div>';
@@ -1130,6 +1349,38 @@ function renderDay(){
 
   h+='<div class="dp-body">';
 
+  // ── #7 SAO NGÀY — 12 Trực & 12 Thần ──
+  var dayChiIdx=CHI_IDX[nc];
+  var truc=getTruc(dayChiIdx,mi), than=getThan(dayChiIdx,mi);
+  var isHD=isHoangDao(than);
+  var trucType=TRUC_TYPE[truc];
+  h+='<div class="saongay-row">';
+  h+='<div class="sn-item"><div class="sn-lbl">12 Trực</div>';
+  h+='<div class="sn-val '+(trucType==='good'?'sn-truc':trucType==='bad'?'sn-truc-bad':'sn-truc-ok')+'">'+truc+'</div></div>';
+  h+='<div class="sn-divider"></div>';
+  h+='<div class="sn-item"><div class="sn-lbl">12 Thần</div>';
+  h+='<div class="sn-val '+(isHD?'sn-hoang':'sn-hac')+'">'+than+'</div></div>';
+  h+='<div class="sn-divider"></div>';
+  h+='<div class="sn-item"><div class="sn-lbl">Ngày</div>';
+  h+='<div class="sn-val '+(isHD?'sn-hoang':'sn-hac')+'">'+(isHD?'☀ Hoàng Đạo':'🌑 Hắc Đạo')+'</div></div>';
+  h+='<div class="sn-divider"></div>';
+  h+='<div style="font-size:11px;color:var(--text2);line-height:1.6;flex:1">'+TRUC_DESC[truc]+'</div>';
+  h+='</div>';
+
+  // ── #5 FAMILY SYNASTRY ──
+  h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center">';
+  h+='<span style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Vận khí gia đình:</span>';
+  FAMILY.forEach(function(m){
+    var fr=familyDayRating(dayChiIdx,m.chi_idx);
+    var clr=rateColor(fr.r);
+    h+='<div title="'+m.name+' ('+m.chi+') — '+fr.txt+'" style="display:flex;align-items:center;gap:3px;padding:3px 8px;border-radius:10px;background:'+clr+'15;border:1px solid '+clr+'40;cursor:default">';
+    h+='<span style="font-size:13px">'+m.icon+'</span>';
+    h+='<span style="font-size:9.5px;font-weight:600;color:'+clr+'">'+m.name.split(' ')[0]+'</span>';
+    h+='<span style="font-size:8px;color:var(--text3)">'+m.chi+'</span>';
+    h+='</div>';
+  });
+  h+='</div>';
+
   // Quick stats for this day
   var best=[],warn=[];
   CUNGS.forEach(function(c){var r=rateC(c,nc,ln);if(r==='great'||r==='good')best.push(c.ten+' '+c.icon);if(r==='bad'||r==='warn')warn.push(c.ten+' '+c.icon);});
@@ -1208,6 +1459,11 @@ function setFilter(f){
   filterMode=f;
   if(view==='month') renderMonth();
 }
+function setActivity(id){
+  currentActivity=id;
+  if(view==='month') renderMonth();
+  else if(view==='solar') renderSolarCal();
+}
 
 // ══════════════════════════════════════════════════════════════
 // MAIN RENDER
@@ -1216,6 +1472,7 @@ function render(){
   updateBreadcrumb();
   updateTabs();
   updateSidebar();
+  renderTodayCard();
   if(view==='year')       renderYear();
   else if(view==='solar') renderSolarCal();
   else if(view==='month') renderMonth();
