@@ -266,6 +266,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
     <div class="tb-sub">Đại Vận Bính Tuất · Hạn La Hầu · Mệnh Sửu · Thiên Cơ Đắc</div>
   </div>
   <div class="tb-nav">
+    <button onclick="toggleSolar()" id="solar-btn" style="padding:5px 12px;border-radius:16px;font-size:11px;font-weight:600;border:1px solid var(--border);color:var(--text2);background:var(--bg3);transition:all .15s">☀ Dương Lịch</button>
     <a href="index.html" style="padding:4px 10px;border-radius:16px;font-size:11px;font-weight:600;border:1px solid var(--border);color:var(--text2);background:var(--bg3)">← Trang chủ</a>
   </div>
 </div>
@@ -278,7 +279,8 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 <!-- VIEW TABS -->
 <div class="view-tabs">
   <button class="vtab" id="vt-year" onclick="goYear()">🌟 Tổng Quan Năm</button>
-  <button class="vtab" id="vt-month" onclick="goMonth(currentMonth)" style="display:none">📅 Tháng <span id="vt-m-lbl"></span></button>
+  <button class="vtab" id="vt-solar" onclick="goSolarMonth(currentSolarMonth)" style="display:none">☀ Dương Lịch <span id="vt-s-lbl"></span></button>
+  <button class="vtab" id="vt-month" onclick="goMonth(currentMonth)" style="display:none">🌙 Tháng <span id="vt-m-lbl"></span></button>
   <button class="vtab" id="vt-week" onclick="goWeek(currentWeek)" style="display:none">📆 Tuần <span id="vt-w-lbl"></span></button>
   <button class="vtab" id="vt-day" onclick="goDay(selectedDay)" style="display:none">📋 Ngày <span id="vt-d-lbl"></span></button>
 </div>
@@ -381,6 +383,16 @@ for(var mi=0;mi<12;mi++){
 function getDays(m){return ALL.filter(function(d){return d.m===m;});}
 function getDay(m,d){return ALL.find(function(x){return x.m===m&&x.d===d;});}
 
+// ── Solar (Dương Lịch) helpers ──
+var SOL_M_NAME=['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6','Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
+function getSolarDays(solM){return ALL.filter(function(d){return d.dl.getMonth()===solM;});}
+function lookupBySolar(solM,solD){return ALL.find(function(d){return d.dl.getMonth()===solM&&d.dl.getDate()===solD;});}
+function getSolarScore(solM){
+  var days=getSolarDays(solM);if(!days.length)return 5;
+  var t=0;days.forEach(function(d){t+=d.r==='great'?4:d.r==='good'?3:d.r==='mid'?2:d.r==='warn'?1:0;});
+  return Math.min(10,Math.round(t/days.length*2.5));
+}
+
 // Month palace stats
 function palaceMonthStat(mi){
   var ln=LN[mi],stat={};
@@ -419,21 +431,30 @@ function scoreClass(s){return s>=8?'sgreen':s>=7?'sblue':s>=6?'sgray':s>=5?'swar
 // STATE
 // ══════════════════════════════════════════════════════════════
 var view='year', currentMonth=5, currentWeek=0, selectedDay=null, filterMode='all';
+var solarMode=false, currentSolarMonth=new Date().getMonth();
 // Auto-set current month
 (function(){var n=new Date();for(var i=11;i>=0;i--){if(n>=M_START[i]){currentMonth=i+1;break;}}})();
 
 // ══════════════════════════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════════════════════════
-function goYear(){view='year';selectedDay=null;render();}
-function goMonth(m){currentMonth=m;currentWeek=0;selectedDay=null;view='month';render();}
+function goYear(){solarMode=false;view='year';selectedDay=null;render();}
+function goMonth(m){solarMode=false;currentMonth=m;currentWeek=0;selectedDay=null;view='month';render();}
 function goWeek(w){currentWeek=w;view='week';render();}
 function goDay(day){if(!day)return;selectedDay=day;currentMonth=day.m;view='day';render();}
+function goSolarMonth(solM){solarMode=true;currentSolarMonth=solM;selectedDay=null;view='solar';render();}
+function toggleSolar(){
+  if(solarMode){solarMode=false;view='year';render();}
+  else{solarMode=true;currentSolarMonth=new Date().getMonth();view='solar';render();}
+}
 
 function updateBreadcrumb(){
   var bc=document.getElementById('bc');
   var h='<span class="bc-item'+(view==='year'?' active':'')+'" onclick="goYear()">🏠 Cả Năm 2026</span>';
-  if(view!=='year'){
+  if(view==='solar'){
+    h+='<span class="bc-sep">›</span>';
+    h+='<span class="bc-item active">☀ Lịch Dương — '+SOL_M_NAME[currentSolarMonth]+'/2026</span>';
+  } else if(view!=='year'){
     h+='<span class="bc-sep">›</span>';
     h+='<span class="bc-item'+(view==='month'&&!selectedDay?' active':'')+'" onclick="goMonth('+currentMonth+')">Tháng '+currentMonth+' Âm</span>';
   }
@@ -443,45 +464,70 @@ function updateBreadcrumb(){
   }
   if(view==='day'&&selectedDay){
     h+='<span class="bc-sep">›</span>';
-    h+='<span class="bc-item active">Ngày '+selectedDay.d+'/'+selectedDay.m+' Âm</span>';
+    var dl=selectedDay.dl;
+    h+='<span class="bc-item active">'+dl.getDate()+'/'+(dl.getMonth()+1)+'/2026 = Ngày '+selectedDay.d+'/'+selectedDay.m+' Âm</span>';
   }
   bc.innerHTML=h;
 }
 
 function updateTabs(){
-  var tabs=['year','month','week','day'];
-  var labels={year:'',month:'Tháng '+currentMonth,week:'Tuần '+(currentWeek+1)+' / T'+currentMonth,day:selectedDay?selectedDay.d+'/'+selectedDay.m+' Âm':''};
+  var tabs=['year','solar','month','week','day'];
   tabs.forEach(function(t){
     var el=document.getElementById('vt-'+t);
     if(!el)return;
-    var lbl=document.getElementById('vt-'+t.charAt(0)+'-lbl');
-    if(lbl) lbl.textContent=labels[t]||'';
-    // Show/hide tabs
-    if(t==='year') el.style.display='';
-    else if(t==='month') el.style.display=(view==='month'||view==='week'||view==='day')?'':'none';
-    else if(t==='week') el.style.display=(view==='week'||view==='day')?'':'none';
-    else if(t==='day') el.style.display=(view==='day'&&selectedDay)?'':'none';
-    el.classList.toggle('active',view===t);
+    if(t==='year'){el.style.display='';el.classList.toggle('active',view==='year');}
+    else if(t==='solar'){
+      el.style.display=(solarMode||view==='solar')?'':'none';
+      el.classList.toggle('active',view==='solar');
+      document.getElementById('vt-s-lbl').textContent=SOL_M_NAME[currentSolarMonth];
+    }
+    else if(t==='month'){
+      el.style.display=(!solarMode&&(view==='month'||view==='week'||view==='day'))?'':'none';
+      el.classList.toggle('active',view==='month');
+    }
+    else if(t==='week'){el.style.display=(view==='week'||view==='day')?'':'none';el.classList.toggle('active',view==='week');}
+    else if(t==='day'){el.style.display=(view==='day'&&selectedDay)?'':'none';el.classList.toggle('active',view==='day');}
   });
-  // Fix label spans
-  document.getElementById('vt-m-lbl').textContent='Tháng '+currentMonth;
+  document.getElementById('vt-m-lbl').textContent='Tháng '+currentMonth+' Âm';
   document.getElementById('vt-w-lbl').textContent='T'+(currentWeek+1)+'/T'+currentMonth;
-  if(selectedDay) document.getElementById('vt-d-lbl').textContent=selectedDay.d+'/'+selectedDay.m;
+  if(selectedDay){var dl=selectedDay.dl;document.getElementById('vt-d-lbl').textContent=dl.getDate()+'/'+(dl.getMonth()+1);}
+  // Toggle solar button appearance
+  var btn=document.getElementById('solar-btn');
+  if(btn){btn.style.background=solarMode?'var(--gold)':'var(--bg3)';btn.style.color=solarMode?'#000':'var(--text2)';btn.style.borderColor=solarMode?'var(--gold)':'var(--border)';}
 }
 
 function updateSidebar(){
   var sb=document.getElementById('sidebar');
-  var h='<div class="sb-title">Tháng Âm 2026</div>';
-  for(var i=0;i<12;i++){
-    var on=(i+1===currentMonth&&view!=='year')?' on':'';
-    var sc=scoreClass(M_SCORE[i]);
-    h+='<div class="mi'+on+'" onclick="goMonth('+(i+1)+')" id="si-'+(i+1)+'">';
-    h+='<div class="mi-n">'+(i+1)+'</div><div class="mi-info">';
-    h+='<div class="mi-name">Tháng '+M_NAME[i]+'</div>';
-    h+='<div class="mi-chi">'+LN[i]+' · '+M_DAYS[i]+' ngày</div></div>';
-    h+='<div class="mi-sc '+sc+'">'+M_SCORE[i]+'</div></div>';
+  if(solarMode){
+    // Solar sidebar
+    var h='<div class="sb-title" style="display:flex;align-items:center;justify-content:space-between;padding-right:10px"><span>Tháng Dương 2026</span><span onclick="goYear()" style="font-size:9px;color:var(--gold);cursor:pointer;font-weight:700">← Âm</span></div>';
+    for(var i=0;i<12;i++){
+      var days=getSolarDays(i);
+      var cntG=0;days.forEach(function(d){if(d.r==='great'||d.r==='good')cntG++;});
+      var totalDays=new Date(2026,i+1,0).getDate();
+      var sc2=getSolarScore(i);
+      var on2=(i===currentSolarMonth&&view==='solar')?' on':'';
+      h+='<div class="mi'+on2+'" onclick="goSolarMonth('+i+')">';
+      h+='<div class="mi-n">'+(i+1)+'</div><div class="mi-info">';
+      h+='<div class="mi-name">'+SOL_M_NAME[i]+'</div>';
+      h+='<div class="mi-chi">'+totalDays+' ngày · ⭐'+cntG+'</div></div>';
+      h+='<div class="mi-sc '+scoreClass(sc2)+'">'+sc2+'</div></div>';
+    }
+    sb.innerHTML=h;
+  } else {
+    // Lunar sidebar
+    var h='<div class="sb-title">Tháng Âm 2026</div>';
+    for(var i=0;i<12;i++){
+      var on=(i+1===currentMonth&&view!=='year')?' on':'';
+      var sc=scoreClass(M_SCORE[i]);
+      h+='<div class="mi'+on+'" onclick="goMonth('+(i+1)+')" id="si-'+(i+1)+'">';
+      h+='<div class="mi-n">'+(i+1)+'</div><div class="mi-info">';
+      h+='<div class="mi-name">Tháng '+M_NAME[i]+'</div>';
+      h+='<div class="mi-chi">'+LN[i]+' · '+M_DAYS[i]+' ngày</div></div>';
+      h+='<div class="mi-sc '+sc+'">'+M_SCORE[i]+'</div></div>';
+    }
+    sb.innerHTML=h;
   }
-  sb.innerHTML=h;
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -562,6 +608,109 @@ function renderYear(){
     h+='</div></div>';
   }
   h+='</div>';
+
+  document.getElementById('main').innerHTML=h;
+}
+
+// ══════════════════════════════════════════════════════════════
+// VIEW: SOLAR CALENDAR (Lịch Dương)
+// ══════════════════════════════════════════════════════════════
+function renderSolarCal(){
+  var solM=currentSolarMonth;
+  var totalDays=new Date(2026,solM+1,0).getDate();
+  var firstDay=new Date(2026,solM,1);
+  var days=getSolarDays(solM);
+  var cnt={great:0,good:0,mid:0,warn:0,bad:0};
+  days.forEach(function(d){cnt[d.r]++;});
+
+  var h='';
+  // Header
+  h+='<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">';
+  h+='<div>';
+  h+='<div style="font-family:Noto Serif,serif;font-size:19px;color:var(--gold);margin-bottom:4px">☀ '+SOL_M_NAME[solM]+' Dương Lịch 2026</div>';
+  h+='<div style="font-size:11.5px;color:var(--text3)">1/'+(solM+1)+'–'+totalDays+'/'+(solM+1)+'/2026 · Dương lịch → Âm lịch · '+days.length+' ngày có dữ liệu tử vi</div>';
+  h+='</div>';
+  h+='<div style="display:flex;gap:6px;flex-wrap:wrap">';
+  if(solM>0) h+='<button onclick="goSolarMonth('+(solM-1)+')" style="padding:5px 11px;border-radius:16px;font-size:11px;font-weight:600;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">← T'+solM+'</button>';
+  if(solM<11) h+='<button onclick="goSolarMonth('+(solM+1)+')" style="padding:5px 11px;border-radius:16px;font-size:11px;font-weight:600;background:var(--bg3);border:1px solid var(--border);color:var(--text2)">T'+(solM+2)+' DL →</button>';
+  h+='</div></div>';
+
+  // Quick month picker strip
+  h+='<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px">';
+  for(var i=0;i<12;i++){
+    var act=i===solM;
+    h+='<button onclick="goSolarMonth('+i+')" style="padding:3px 9px;border-radius:14px;font-size:11px;font-weight:600;border:1px solid '+(act?'var(--gold)':'var(--border2)')+';background:'+(act?'var(--gold-dim)':'transparent')+';color:'+(act?'var(--gold)':'var(--text3)')+'">T'+(i+1)+'</button>';
+  }
+  h+='</div>';
+
+  // Stats
+  h+='<div class="stats5" style="margin-bottom:14px">';
+  [{r:'great',l:'⭐ Rất tốt'},{r:'good',l:'✅ Tốt'},{r:'mid',l:'〰 Bình'},{r:'warn',l:'⚠ Chú ý'},{r:'bad',l:'🔴 Xấu'}].forEach(function(x){
+    h+='<div class="s5"><div class="s5-n" style="color:'+rateColor(x.r)+'">'+cnt[x.r]+'</div><div class="s5-l">'+x.l+'</div></div>';
+  });
+  h+='</div>';
+
+  // Info box — which lunar months overlap
+  var lunarSet={};
+  days.forEach(function(d){lunarSet[d.m]=true;});
+  var lunarNums=Object.keys(lunarSet).map(Number).sort(function(a,b){return a-b;});
+  h+='<div style="background:var(--bg3);border:1px solid var(--border2);border-left:3px solid var(--gold);border-radius:8px;padding:9px 13px;font-size:11.5px;color:var(--text2);margin-bottom:14px">';
+  h+='<strong style="color:var(--text)">☀→🌙 Quy đổi:</strong> '+SOL_M_NAME[solM]+'/2026 Dương tương ứng Tháng Âm ';
+  h+=lunarNums.map(function(n){return '<strong style="color:var(--gold)">'+n+' ('+M_NAME[n-1]+')</strong>';}).join(' + ');
+  h+='</div>';
+
+  // Legend
+  h+='<div class="legend">';
+  [{c:'#1a7a3c',l:'⭐ Rất tốt'},{c:'#1a5276',l:'✅ Tốt'},{c:'#3a3530',l:'〰 Bình'},{c:'#7d4400',l:'⚠ Chú ý'},{c:'#8b1a12',l:'🔴 Xấu'}].forEach(function(x){
+    h+='<div class="leg"><div class="leg-d" style="background:'+x.c+';opacity:.7"></div>'+x.l+'</div>';
+  });
+  h+='</div>';
+
+  // Calendar
+  h+='<div class="cal-wrap"><div class="cal-dow">';
+  ['T2','T3','T4','T5','T6','T7','CN'].forEach(function(d,i){h+='<div'+(i===6?' style="color:#d4875a"':'')+'>'+d+'</div>';});
+  h+='</div><div class="cal-grid">';
+  var pad=(firstDay.getDay()===0?6:firstDay.getDay()-1);
+  for(var p=0;p<pad;p++) h+='<div class="dc empty"></div>';
+  for(var solD=1;solD<=totalDays;solD++){
+    var day=lookupBySolar(solM,solD);
+    var curDate=new Date(2026,solM,solD);
+    var isWknd=curDate.getDay()===0||curDate.getDay()===6;
+    if(day){
+      var sel=(selectedDay&&selectedDay.m===day.m&&selectedDay.d===day.d)?' sel':'';
+      var wkClass=isWknd?' wknd':'';
+      h+='<div class="dc r-'+day.r+sel+wkClass+'" onclick="goDay(lookupBySolar('+solM+','+solD+'))" title="'+solD+'/'+(solM+1)+'/2026 (DL) = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+' · '+rateLabel(day.r)+'">';
+      h+='<div class="dc-d"'+(isWknd?' style="color:#d4875a"':'')+'>'+solD+'</div>';
+      h+='<div style="font-size:8.5px;color:var(--gold);font-weight:700;line-height:1.2">'+day.d+'/'+day.m+'🌙</div>';
+      h+='<div class="dc-cc">'+day.cc.chi+'</div>';
+      h+='<div class="dc-dot dot-'+day.r+'"></div>';
+      h+='</div>';
+    } else {
+      h+='<div class="dc" style="opacity:.22;cursor:default">';
+      h+='<div class="dc-d"'+(isWknd?' style="color:#d4875a"':'')+'>'+solD+'</div>';
+      h+='<div style="font-size:8px;color:var(--text3)">N/A</div>';
+      h+='</div>';
+    }
+  }
+  h+='</div></div>';
+
+  // Best days this solar month
+  var bestDays=days.filter(function(d){return d.r==='great'||d.r==='good';});
+  if(bestDays.length){
+    h+='<div class="divider"></div>';
+    h+='<div class="sec-hdr">⭐ Ngày Tốt Nhất Trong Tháng '+(solM+1)+' Dương</div>';
+    h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">';
+    bestDays.forEach(function(day){
+      var dl=day.dl;
+      h+='<div onclick="goDay(lookupBySolar('+solM+','+dl.getDate()+'))" style="background:'+rateColor(day.r)+'20;border:1px solid '+rateColor(day.r)+'60;border-radius:8px;padding:7px 10px;cursor:pointer;text-align:center;min-width:80px;transition:all .12s" onmouseover="this.style.opacity=\'.8\'" onmouseout="this.style.opacity=\'1\'">';
+      h+='<div style="font-size:15px;font-weight:700;color:var(--text)">'+dl.getDate()+'</div>';
+      h+='<div style="font-size:9px;color:var(--text3)">'+(dl.getMonth()+1)+'/2026 '+DOW_VN[dl.getDay()]+'</div>';
+      h+='<div style="font-size:8.5px;color:var(--gold);font-weight:600">'+day.d+'/'+day.m+'🌙</div>';
+      h+='<div style="font-size:9px;font-weight:700;color:'+rateColor(day.r)+';margin-top:2px">'+rateLabel(day.r).split(' ').slice(0,2).join(' ')+'</div>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
 
   document.getElementById('main').innerHTML=h;
 }
@@ -686,9 +835,10 @@ function renderMonth(){
     for(var p=0;p<pad;p++) h+='<div class="wd empty"></div>';
     wdays.forEach(function(day){
       var sel=(selectedDay&&selectedDay.m===day.m&&selectedDay.d===day.d)?' sel':'';
-      h+='<div class="wd r-'+day.r+sel+'" onclick="goDay(getDay('+day.m+','+day.d+'))" title="'+day.d+'/'+day.m+' · '+day.cc.can+' '+day.cc.chi+'">';
+      var wd2=day.dl;
+      h+='<div class="wd r-'+day.r+sel+'" onclick="goDay(getDay('+day.m+','+day.d+'))" title="'+wd2.getDate()+'/'+(wd2.getMonth()+1)+'/2026 = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+'">';
       h+='<div class="wd-d">'+day.d+'</div>';
-      h+='<div class="wd-dl">'+dlStr(day.dl)+'</div>';
+      h+='<div class="wd-dl" style="color:var(--gold);font-weight:600">'+dlStr(day.dl)+' DL</div>';
       h+='<div class="wd-cc">'+day.cc.chi+'</div>';
       h+='<div class="wd-dot dot-'+day.r+'"></div></div>';
     });
@@ -732,9 +882,10 @@ function renderMonth(){
     var sel=(selectedDay&&selectedDay.m===day.m&&selectedDay.d===day.d)?' sel':'';
     var wknd=(day.dl.getDay()===0||day.dl.getDay()===6)?' wknd':'';
     var noshow=vis?'':' no-show';
-    h+='<div class="dc r-'+day.r+sel+wknd+noshow+'" onclick="goDay(getDay('+day.m+','+day.d+'))" title="'+day.d+'/'+day.m+' · '+day.cc.can+' '+day.cc.chi+'">';
+    var dl2=day.dl;
+    h+='<div class="dc r-'+day.r+sel+wknd+noshow+'" onclick="goDay(getDay('+day.m+','+day.d+'))" title="'+dl2.getDate()+'/'+(dl2.getMonth()+1)+'/2026 (DL) = Ngày '+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+'">';
     h+='<div class="dc-d">'+day.d+'</div>';
-    h+='<div class="dc-dl">'+dlStr(day.dl)+'</div>';
+    h+='<div style="font-size:8px;color:var(--gold);font-weight:600;line-height:1.2">'+dlStr(day.dl)+' DL</div>';
     h+='<div class="dc-cc">'+day.cc.chi+'</div>';
     h+='<div class="dc-dot dot-'+day.r+'"></div></div>';
   });
@@ -849,11 +1000,19 @@ function renderDay(){
 
   // Day panel
   h+='<div class="day-panel">';
+  var gdl=day.dl;
   h+='<div class="dp-hdr">';
-  h+='<div class="dp-date">'+day.d+'<span style="font-size:13px;color:var(--text3)">/'+day.m+' Âm</span></div>';
+  h+='<div style="display:flex;flex-direction:column;gap:2px">';
+  h+='<div class="dp-date">'+gdl.getDate()+'<span style="font-size:14px;color:var(--text3)">/'+(gdl.getMonth()+1)+'/2026</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3)">'+DOW_VN[gdl.getDay()]+'</div>';
+  h+='</div>';
+  h+='<div style="display:flex;flex-direction:column;align-items:center;gap:2px;background:rgba(200,150,10,.08);border:1px solid var(--border);border-radius:7px;padding:6px 10px;min-width:72px;text-align:center">';
+  h+='<div style="font-size:18px;font-weight:700;color:var(--gold);font-family:Noto Serif,serif">'+day.d+'<span style="font-size:11px">/'+day.m+'</span></div>';
+  h+='<div style="font-size:9.5px;color:var(--text3)">Âm lịch</div>';
+  h+='</div>';
   h+='<div class="dp-info">';
-  h+='<div class="dp-cc">'+day.cc.can+' '+day.cc.chi+' · Tháng '+day.m+' Âm ('+M_NAME[mi]+') · Lưu Nguyệt: <strong style="color:var(--gold)">'+ln+'</strong></div>';
-  h+='<div class="dp-dl">'+dlFull(day.dl)+'</div>';
+  h+='<div class="dp-cc">'+day.cc.can+' '+day.cc.chi+' · Tháng '+day.m+' Âm ('+M_NAME[mi]+')</div>';
+  h+='<div class="dp-dl">Lưu Nguyệt: <strong style="color:var(--gold)">'+ln+'</strong></div>';
   h+='</div>';
   h+='<span class="badge '+rateBadge(rc)+'" style="font-size:12px;padding:5px 14px">'+rateLabel(rc)+'</span>';
   h+='</div>'; // dp-hdr
@@ -947,12 +1106,15 @@ function render(){
   updateTabs();
   updateSidebar();
   if(view==='year')       renderYear();
+  else if(view==='solar') renderSolarCal();
   else if(view==='month') renderMonth();
   else if(view==='week')  renderWeek();
   else if(view==='day')   renderDay();
-  // Update sidebar active
-  document.querySelectorAll('.mi').forEach(function(el){el.classList.remove('on');});
-  if(view!=='year'){var si=document.getElementById('si-'+currentMonth);if(si){si.classList.add('on');si.scrollIntoView({block:'nearest'});}}
+  // Update sidebar active (only for lunar mode)
+  if(!solarMode){
+    document.querySelectorAll('.mi').forEach(function(el){el.classList.remove('on');});
+    if(view!=='year'){var si=document.getElementById('si-'+currentMonth);if(si){si.classList.add('on');si.scrollIntoView({block:'nearest'});}}
+  }
 }
 
 // Init — auto-detect week from selectedDay or today
