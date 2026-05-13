@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lịch Tử Vi 2026 — Mr. Hoàng</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Serif:wght@400;600&display=swap');
+
+/* ═══ VARIABLES ═══ */
+:root {
+  --bg:       #0f0c07;
+  --bg2:      #1a1208;
+  --bg3:      #241a0a;
+  --bg4:      #2e200c;
+  --gold:     #c8960a;
+  --gold-lt:  #f5e9c4;
+  --gold-dim: rgba(200,150,10,.15);
+  --amber:    #7d5a0a;
+  --text:     #f0e6cc;
+  --text2:    #c8b882;
+  --text3:    #7d6a4a;
+  --border:   rgba(200,150,10,.25);
+  --border2:  rgba(200,150,10,.12);
+
+  --c-great:  #1a7a3c;
+  --c-great2: #d5f0dc;
+  --c-good:   #1a5276;
+  --c-good2:  #d6eaf8;
+  --c-mid:    #4a4540;
+  --c-mid2:   #e8e4de;
+  --c-warn:   #7d4400;
+  --c-warn2:  #fef0cc;
+  --c-bad:    #8b1a12;
+  --c-bad2:   #fde8e6;
+
+  --radius:   10px;
+  --shadow:   0 4px 20px rgba(0,0,0,.4);
+}
+
+/* ═══ RESET & BASE ═══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: var(--gold); text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ═══ TOPBAR ═══ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,12,7,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap;
+}
+.topbar-left { display: flex; align-items: center; gap: 10px; }
+.topbar-logo { font-family: 'Noto Serif', serif; font-size: 16px; color: var(--gold); white-space: nowrap; }
+.topbar-sub { font-size: 11px; color: var(--text3); }
+.topbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tpbtn {
+  padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  border: 1px solid var(--border); background: transparent; color: var(--text2);
+  transition: all .15s;
+}
+.tpbtn:hover, .tpbtn.on { background: var(--gold); color: #000; border-color: var(--gold); }
+.back-btn {
+  padding: 5px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 600;
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text2);
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.back-btn:hover { background: var(--gold-dim); }
+
+/* ═══ HERO ═══ */
+.hero {
+  background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+  padding: 28px 20px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border2);
+}
+.hero h1 {
+  font-family: 'Noto Serif', serif;
+  font-size: 22px; color: var(--gold);
+  margin-bottom: 6px; letter-spacing: .3px;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
+.chip {
+  padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  border: 1px solid var(--border); background: var(--bg3); color: var(--text2);
+}
+.chip.g { background: rgba(26,122,60,.2); border-color: rgba(26,122,60,.4); color: #5dbd77; }
+.chip.r { background: rgba(139,26,18,.2); border-color: rgba(139,26,18,.4); color: #ff8a7a; }
+.chip.y { background: rgba(200,150,10,.15); border-color: var(--border); color: var(--gold); }
+
+/* ═══ LAYOUT ═══ */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 120px);
+}
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar {
+  background: var(--bg2);
+  border-right: 1px solid var(--border2);
+  padding: 16px 0;
+  position: sticky; top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+.sidebar-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  color: var(--text3); text-transform: uppercase;
+  padding: 0 16px 10px;
+}
+.month-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all .15s;
+}
+.month-item:hover { background: var(--gold-dim); }
+.month-item.active {
+  background: var(--gold-dim);
+  border-left-color: var(--gold);
+}
+.mi-num {
+  font-family: 'Noto Serif', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--text3); min-width: 28px; text-align: center;
+}
+.month-item.active .mi-num { color: var(--gold); }
+.mi-info { flex: 1; min-width: 0; }
+.mi-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.mi-chi { font-size: 10px; color: var(--text3); }
+.mi-score {
+  font-size: 11px; font-weight: 700; padding: 2px 7px;
+  border-radius: 10px; white-space: nowrap;
+}
+.ms-great { background: var(--c-great); color: #fff; }
+.ms-good  { background: var(--c-good);  color: #fff; }
+.ms-mid   { background: var(--c-mid);   color: #fff; }
+.ms-warn  { background: var(--c-warn);  color: #fff; }
+.ms-bad   { background: var(--c-bad);   color: #fff; }
+
+/* ═══ MAIN ═══ */
+.main { padding: 20px; }
+
+/* ═══ MONTH TABS (mobile) ═══ */
+.month-tabs {
+  display: none;
+  overflow-x: auto; gap: 6px;
+  padding: 12px 16px; background: var(--bg2);
+  border-bottom: 1px solid var(--border2);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.month-tabs::-webkit-scrollbar { display: none; }
+@media (max-width: 768px) { .month-tabs { display: flex; } }
+.mtab {
+  padding: 5px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 600;
+  border: 1px solid var(--border); background: transparent; color: var(--text3);
+  white-space: nowrap; transition: all .15s; flex-shrink: 0;
+}
+.mtab.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+/* ═══ MONTH HEADER ═══ */
+.month-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+}
+.mh-left h2 {
+  font-family: 'Noto Serif', serif;
+  font-size: 18px; color: var(--gold); margin-bottom: 4px;
+}
+.mh-meta { font-size: 11.5px; color: var(--text3); }
+.mh-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px;
+}
+.mhb-score {
+  font-size: 28px; font-weight: 700;
+  font-family: 'Noto Serif', serif;
+}
+.mhb-info { font-size: 11px; color: var(--text3); line-height: 1.4; }
+.mhb-grade { font-size: 13px; font-weight: 700; }
+
+/* ═══ FILTER BAR ═══ */
+.filter-bar {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 14px; flex-wrap: wrap;
+}
+.filter-bar span { font-size: 11px; color: var(--text3); font-weight: 600; margin-right: 2px; }
+.fbtn {
+  padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  border: 1px solid var(--border2); background: transparent; color: var(--text3);
+  transition: all .15s;
+}
+.fbtn.on { border-color: var(--gold); background: var(--gold-dim); color: var(--gold); }
+.fbtn:hover { background: var(--gold-dim); color: var(--text); }
+
+/* ═══ LEGEND ═══ */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin-bottom: 16px; font-size: 11px;
+}
+.leg-item { display: flex; align-items: center; gap: 5px; color: var(--text3); }
+.leg-dot {
+  width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
+}
+
+/* ═══ CALENDAR GRID ═══ */
+.cal-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.cal-dow {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border2);
+}
+.cal-dow-cell {
+  text-align: center; padding: 8px 4px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .3px;
+  color: var(--text3); text-transform: uppercase;
+}
+.cal-dow-cell:last-child { color: #d4875a; } /* CN */
+
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 1px; background: var(--border2);
+}
+.cal-cell {
+  background: var(--bg2);
+  padding: 6px 4px 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .12s;
+  position: relative;
+  min-height: 60px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  user-select: none;
+}
+.cal-cell.empty { background: var(--bg); cursor: default; }
+.cal-cell:not(.empty):hover { background: var(--bg4); z-index: 1; }
+.cal-cell.selected {
+  background: var(--gold-dim) !important;
+  box-shadow: inset 0 0 0 2px var(--gold);
+  z-index: 2;
+}
+
+/* Day cell colors */
+.cal-cell.r-great { background: rgba(26,122,60,.18); }
+.cal-cell.r-good  { background: rgba(26,82,118,.18); }
+.cal-cell.r-mid   { background: var(--bg2); }
+.cal-cell.r-warn  { background: rgba(125,68,0,.18); }
+.cal-cell.r-bad   { background: rgba(139,26,18,.18); }
+
+.cell-lday {
+  font-size: 15px; font-weight: 700; line-height: 1;
+  color: var(--text);
+}
+.cell-dl {
+  font-size: 9px; color: var(--text3); line-height: 1;
+}
+.cell-cc {
+  font-size: 9px; color: var(--text3); line-height: 1;
+}
+.cell-dot {
+  width: 6px; height: 6px; border-radius: 50%; margin-top: 1px; flex-shrink: 0;
+}
+.dot-great { background: #2ecc71; }
+.dot-good  { background: #5dade2; }
+.dot-mid   { background: #636363; }
+.dot-warn  { background: #f39c12; }
+.dot-bad   { background: #e74c3c; }
+
+/* Weekend style */
+.cal-cell.weekend .cell-lday { color: #d4875a; }
+
+/* ═══ DAY DETAIL PANEL ═══ */
+.detail-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+  animation: slideIn .2s ease;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.dp-hdr {
+  padding: 14px 18px;
+  background: linear-gradient(90deg, var(--bg3), var(--bg2));
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.dp-date {
+  font-family: 'Noto Serif', serif;
+  font-size: 22px; font-weight: 600; color: var(--gold);
+  line-height: 1;
+}
+.dp-meta { flex: 1; }
+.dp-cc { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.dp-dl { font-size: 11.5px; color: var(--text3); }
+.dp-badge {
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.badge-great { background: var(--c-great); color: #fff; }
+.badge-good  { background: var(--c-good);  color: #fff; }
+.badge-mid   { background: var(--c-mid);   color: #fff; }
+.badge-warn  { background: #c8960a;        color: #fff; }
+.badge-bad   { background: var(--c-bad);   color: #fff; }
+
+.dp-body { padding: 14px 18px; }
+
+/* Cung table in detail */
+.cung-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.cg-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 9px 11px;
+  border-left: 3px solid var(--border2);
+  transition: border-color .15s;
+}
+.cg-card.ct-great { border-left-color: #2ecc71; background: rgba(26,122,60,.12); }
+.cg-card.ct-good  { border-left-color: #5dade2; background: rgba(26,82,118,.12); }
+.cg-card.ct-mid   { border-left-color: #636363; }
+.cg-card.ct-warn  { border-left-color: #f39c12; background: rgba(125,68,0,.12); }
+.cg-card.ct-bad   { border-left-color: #e74c3c; background: rgba(139,26,18,.12); }
+
+.cg-hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.cg-icon { font-size: 14px; }
+.cg-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.cg-chi { font-size: 10px; color: var(--gold); font-weight: 700; margin-left: 2px; }
+.cg-badge {
+  margin-left: auto;
+  padding: 1px 6px; border-radius: 8px;
+  font-size: 10px; font-weight: 700; white-space: nowrap;
+}
+.cg-sao { font-size: 10px; color: var(--text3); font-style: italic; margin-bottom: 5px; line-height: 1.4; }
+.cg-nx { font-size: 11px; color: var(--text2); line-height: 1.55; }
+.cg-nen { font-size: 10.5px; color: #5dbd77; margin-top: 4px; }
+.cg-khong { font-size: 10.5px; color: #ff8a7a; margin-top: 2px; }
+
+/* Day overall box */
+.day-ov {
+  padding: 10px 14px; border-radius: 8px;
+  font-size: 12px; line-height: 1.7;
+  border-left: 3px solid; margin-top: 12px;
+}
+.ov-great { background: rgba(26,122,60,.15); border-color: #2ecc71; }
+.ov-good  { background: rgba(26,82,118,.15); border-color: #5dade2; }
+.ov-mid   { background: rgba(70,65,60,.3);   border-color: #636363; }
+.ov-warn  { background: rgba(125,68,0,.15);  border-color: #f39c12; }
+.ov-bad   { background: rgba(139,26,18,.15); border-color: #e74c3c; }
+.ov-title { font-weight: 700; margin-bottom: 4px; color: var(--text); }
+
+/* ═══ QUICK STATS ═══ */
+.stats-row {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 6px;
+  margin-bottom: 18px;
+}
+@media(max-width:500px) { .stats-row { grid-template-columns: repeat(3,1fr); } }
+.stat-box {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 8px 10px; text-align: center;
+}
+.stat-num { font-size: 20px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+.stat-lbl { font-size: 10px; color: var(--text3); }
+.sn-great { color: #2ecc71; } .sn-good { color: #5dade2; }
+.sn-mid   { color: #95a5a6; } .sn-warn { color: #f39c12; } .sn-bad  { color: #e74c3c; }
+
+/* ═══ MISC ═══ */
+.divider { height: 1px; background: var(--border2); margin: 16px 0; }
+.no-select { pointer-events: none; opacity: .3; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div>
+      <div class="topbar-logo">🔮 Lịch Tử Vi — Mr. Hoàng</div>
+      <div class="topbar-sub">Năm Bính Ngọ 2026 · Đại Vận Bính Tuất · Mệnh Sửu</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="tpbtn on" id="btn-all" onclick="setFilter('all')">Tất cả</button>
+    <button class="tpbtn" id="btn-great" onclick="setFilter('great')">⭐ Rất tốt</button>
+    <button class="tpbtn" id="btn-good" onclick="setFilter('good')">✅ Tốt</button>
+    <button class="tpbtn" id="btn-warn" onclick="setFilter('warn')">⚠ Cẩn thận</button>
+    <button class="tpbtn" id="btn-bad" onclick="setFilter('bad')">🔴 Xấu</button>
+    <a href="index.html" class="back-btn">← Trang chủ</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Lịch Tử Vi Toàn Năm Bính Ngọ 2026</h1>
+  <div style="font-size:12px;color:var(--text3);margin-top:4px">Chọn tháng → chọn ngày → xem phân tích 12 cung chi tiết</div>
+  <div class="hero-chips">
+    <span class="chip y">Mệnh Sửu · Thiên Cơ Đắc</span>
+    <span class="chip g">Bính Lộc → Tài Bạch 💰</span>
+    <span class="chip g">Bính Quyền → Mệnh ✦</span>
+    <span class="chip r">Ngọ xung Quan Lộc ⚠</span>
+    <span class="chip r">Song Kỵ → Nô Bộc 🔴</span>
+    <span class="chip y">Đại Vận Bính Tuất (31–40)</span>
+  </div>
+</div>
+
+<!-- MOBILE MONTH TABS -->
+<div class="month-tabs" id="month-tabs"></div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar"></div>
+
+  <!-- MAIN -->
+  <div class="main" id="main-content"></div>
+
+</div><!-- end layout -->
+
+<script>
+'use strict';
+// ══════════════════════════════════════════════════════════════
+// DATA ENGINE
+// ══════════════════════════════════════════════════════════════
+
+var CAN  = ['Giáp','Ất','Bính','Đinh','Mậu','Kỷ','Canh','Tân','Nhâm','Quý'];
+var CHI  = ['Tý','Sửu','Dần','Mão','Thìn','Tị','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+var DOW  = ['CN','T2','T3','T4','T5','T6','T7'];
+
+var CHI_IDX = {}; CHI.forEach(function(c,i){ CHI_IDX[c]=i; });
+var LUC_HOP = {Tý:'Sửu',Sửu:'Tý',Dần:'Hợi',Hợi:'Dần',Mão:'Tuất',Tuất:'Mão',
+               Thìn:'Dậu',Dậu:'Thìn',Tị:'Thân',Thân:'Tị',Ngọ:'Mùi',Mùi:'Ngọ'};
+var TAM_HOP = [[2,6,10],[5,9,1],[8,0,4],[11,3,7]];
+
+function isXung(c1,c2){ return Math.abs(CHI_IDX[c1]-CHI_IDX[c2])===6; }
+function isTH(c1,c2){
+  var i1=CHI_IDX[c1],i2=CHI_IDX[c2];
+  for(var g=0;g<TAM_HOP.length;g++) if(TAM_HOP[g].indexOf(i1)>=0&&TAM_HOP[g].indexOf(i2)>=0) return true;
+  return false;
+}
+
+// 12 cung lá số Mr. Hoàng
+var CUNGS = [
+  {chi:'Sửu',ten:'Mệnh',     icon:'🧭',sao:'Thiên Cơ(Đ), H.Quyền+L.H.Quyền, Thiên Hình',hung:false,tot:true},
+  {chi:'Dần',ten:'Phụ Mẫu',  icon:'👴',sao:'Tử Vi(M), Thiên Phú(M), Ân Quang, Thiên Việt', hung:false,tot:true},
+  {chi:'Mão',ten:'Phúc Đức', icon:'🌸',sao:'Thái Âm(H), Hóa Khoa B, Đào Hoa, Hy Thần',    hung:false,tot:false},
+  {chi:'Thìn',ten:'Điền Trạch',icon:'🏠',sao:'Tham Lang(V), Địa Kiếp, Bệnh Phù, Thiên La', hung:true, tot:false},
+  {chi:'Tị',ten:'Huynh Đệ',  icon:'🤝',sao:'Phá Quân(M), Thiên Khốc, Thiên Hư, Thiên Giải',hung:false,tot:false},
+  {chi:'Ngọ',ten:'Nô Bộc',   icon:'👥',sao:'Liêm Trinh(V), T.Tướng(V), Thái Tuế, Song Kỵ',hung:true, tot:false},
+  {chi:'Mùi',ten:'Thiên Di',  icon:'🚀',sao:'Thiên Lương(Đ), Quốc Ân, Giải Thần, Bệnh Phù',hung:false,tot:true},
+  {chi:'Thân',ten:'Tật Ách',  icon:'🏥',sao:'Thất Sát(M), Thiên Mã(Đ), Lộc Tồn(H), Tả Phù',hung:false,tot:false},
+  {chi:'Dậu',ten:'Tử Tức',   icon:'👶',sao:'Vũ Khúc(M), H.Quyền DV+B, Long Trì, Thanh Long',hung:false,tot:true},
+  {chi:'Tuất',ten:'Tài Bạch', icon:'💰',sao:'Thiên Đồng(H), Bính Lộc, DV.Lộc Tồn, Thiên Mã(Đ)',hung:false,tot:true},
+  {chi:'Hợi',ten:'Phu Thê',   icon:'❤️',sao:'Thái Dương(H), Hóa Lộc B, L.Thiên Khôi, Nguyệt Đức',hung:false,tot:true},
+  {chi:'Tý',ten:'Quan Lộc',  icon:'💼',sao:'Cự Môn(H), Văn Xương, Song Khoa DV+B, L.Lộc Tồn',hung:false,tot:true},
+];
+
+var CUNG_ADV = {
+  'Mệnh':     {y:'Ra quyết định, gặp người quan trọng',    n:'Để cảm xúc chi phối quyết định lớn'},
+  'Phụ Mẫu':  {y:'Gặp bề trên, nhờ hỗ trợ, xin vay vốn', n:'Tranh luận với bề trên'},
+  'Phúc Đức': {y:'Tĩnh tâm, sáng tạo, chăm sóc bản thân', n:'Làm việc quá sức, căng thẳng'},
+  'Điền Trạch':{y:'Kiểm tra bảo trì nhà, dọn dẹp',         n:'Ký hợp đồng BĐS, giao dịch nhà đất'},
+  'Huynh Đệ': {y:'Gặp bạn bè lâu năm, duy trì quan hệ',   n:'Cho mượn tiền, bảo lãnh anh em'},
+  'Nô Bộc':   {y:'Họp nhóm nhỏ, kiểm tra quy trình',       n:'Tuyển người mới, hùn vốn, bảo lãnh'},
+  'Thiên Di':  {y:'Đi công tác, gặp đối tác ngoài',         n:'Đi xa một mình khi hung tinh kích'},
+  'Tật Ách':  {y:'Tập thể dục, khám sức khỏe định kỳ',     n:'Làm việc quá sức, thể thao mạo hiểm'},
+  'Tử Tức':   {y:'Dành thời gian con cái, khen khích lệ',   n:'Kỷ luật quá nghiêm khi tâm trạng xấu'},
+  'Tài Bạch': {y:'Thu tiền, chốt hợp đồng, nhận đầu tư',   n:'Cho vay, đầu tư mạo hiểm, tiền ảo'},
+  'Phu Thê':  {y:'Quan tâm vợ, hẹn hò, chia sẻ tâm tư',   n:'Tranh cãi về tiền, về trễ không báo'},
+  'Quan Lộc': {y:'Đàm phán, ký hợp đồng, thuyết trình',    n:'Tranh luận bộc phát, nói nhiều thị phi'},
+};
+
+// Can-chi ngày: mốc 29/01/2026 = Mậu Thân (CAN[4], CHI[8])
+var BASE_DATE = new Date(2026,0,29);
+var BASE_CAN_I = 4, BASE_CHI_I = 8;
+function getCC(d){
+  var diff = Math.round((d - BASE_DATE)/86400000);
+  return { can: CAN[(BASE_CAN_I+diff%10+600)%10], chi: CHI[(BASE_CHI_I+diff%12+600)%12] };
+}
+
+// Lưu nguyệt T1=Dần...T12=Sửu
+var LN = ['Dần','Mão','Thìn','Tị','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi','Tý','Sửu'];
+
+// Tháng âm: ngày DL đầu tháng, số ngày
+var M_START = [
+  new Date(2026,0,29), new Date(2026,1,27), new Date(2026,2,28),
+  new Date(2026,3,26), new Date(2026,4,24), new Date(2026,5,22),
+  new Date(2026,6,22), new Date(2026,7,19), new Date(2026,8,17),
+  new Date(2026,9,16), new Date(2026,10,14), new Date(2026,11,13),
+];
+var M_DAYS = [30,29,28,30,29,30,27,29,29,28,29,28];
+var M_NAME = ['Giêng','Hai','Ba','Tư','Năm','Sáu','Bảy','Tám','Chín','Mười','Mười Một','Chạp'];
+var M_SCORE= [8,9,6,5,3,6,6,8,9,8,9,8];
+var M_GRADE= ['✅ Tốt','⭐ Rất Tốt','〰 Trung Bình','⚠ Cẩn Thận','🔴 Xấu Nhất','〰 Trung Bình','〰 Trung Bình','✅ Tốt','⭐ Vàng','✅ Tốt','⭐ Rất Tốt','✅ Tốt'];
+
+// Đánh giá cung
+function rateC(cung, ngayChi, ln){
+  var sc=0, cn=cung.chi, h=cung.hung, t=cung.tot;
+  if(cn===ngayChi) sc += h?-3:3;
+  if(isXung(cn,ngayChi)) sc -= h?2:3;
+  if(isTH(cn,ngayChi)) sc += h?-1:2;
+  if(LUC_HOP[cn]===ngayChi) sc += 1;
+  if(cn===ln) sc += h?-3:2;
+  if(isXung(cn,ln)) sc -= h?2:2;
+  if(isTH(cn,ln)) sc += h?-1:2;
+  if(t) sc+=1;
+  if(sc>=5) return 'great';
+  if(sc>=3) return 'good';
+  if(sc>=-1) return 'mid';
+  if(sc>=-3) return 'warn';
+  return 'bad';
+}
+
+function rateDayOverall(ngayChi, ln){
+  var total=0;
+  CUNGS.forEach(function(c){
+    var r=rateC(c,ngayChi,ln);
+    total += r==='great'?2 : r==='good'?1 : r==='mid'?0 : r==='warn'?-1 : -2;
+  });
+  if(total>=8)  return 'great';
+  if(total>=4)  return 'good';
+  if(total>=-4) return 'mid';
+  if(total>=-8) return 'warn';
+  return 'bad';
+}
+
+// ══ Pre-compute all days ══
+var ALL_DAYS = []; // [{m, d, dl, cc, rating}]
+for(var mi=0;mi<12;mi++){
+  for(var di=0;di<M_DAYS[mi];di++){
+    var dl = new Date(M_START[mi].getTime() + di*86400000);
+    var cc = getCC(dl);
+    var rt = rateDayOverall(cc.chi, LN[mi]);
+    ALL_DAYS.push({ m:mi+1, d:di+1, dl:dl, cc:cc, rating:rt });
+  }
+}
+
+// Count per month
+function countRatings(mi){
+  var cnt={great:0,good:0,mid:0,warn:0,bad:0};
+  ALL_DAYS.forEach(function(day){ if(day.m===mi+1) cnt[day.rating]++; });
+  return cnt;
+}
+
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+var currentMonth = new Date() >= M_START[4] ? 5 : 1; // default to month 5 if past May
+var selectedDay  = null;
+var filterMode   = 'all';
+
+// ══════════════════════════════════════════════════════════════
+// RENDER SIDEBAR
+// ══════════════════════════════════════════════════════════════
+function renderSidebar(){
+  var sb = document.getElementById('sidebar');
+  var html = '<div class="sidebar-title">Tháng Âm Lịch 2026</div>';
+  for(var i=0;i<12;i++){
+    var s=M_SCORE[i];
+    var sc_cls = s>=8?'ms-great': s>=7?'ms-good': s>=6?'ms-mid': s>=5?'ms-warn':'ms-bad';
+    var active  = (i+1===currentMonth) ? ' active' : '';
+    html += '<div class="month-item'+active+'" onclick="switchMonth('+(i+1)+')" id="si-'+(i+1)+'">';
+    html += '<div class="mi-num">'+(i+1)+'</div>';
+    html += '<div class="mi-info">';
+    html += '<div class="mi-name">Tháng '+M_NAME[i]+'</div>';
+    html += '<div class="mi-chi">'+LN[i]+' · '+M_DAYS[i]+' ngày</div>';
+    html += '</div>';
+    html += '<div class="mi-score '+sc_cls+'">'+s+'/10</div>';
+    html += '</div>';
+  }
+  sb.innerHTML = html;
+}
+
+function renderMobileTabs(){
+  var el = document.getElementById('month-tabs');
+  var html = '';
+  for(var i=0;i<12;i++){
+    var active = (i+1===currentMonth) ? ' active' : '';
+    html += '<button class="mtab'+active+'" onclick="switchMonth('+(i+1)+')" id="mt-'+(i+1)+'">T'+(i+1)+' '+LN[i]+'</button>';
+  }
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER MAIN
+// ══════════════════════════════════════════════════════════════
+function renderMain(){
+  var mi   = currentMonth - 1;
+  var ln   = LN[mi];
+  var days = ALL_DAYS.filter(function(d){ return d.m === currentMonth; });
+  var cnt  = countRatings(mi);
+  var score= M_SCORE[mi];
+  var sc_cls = score>=8?'badge-great': score>=7?'badge-good': score>=6?'badge-mid': score>=5?'badge-warn':'badge-bad';
+  var scoreColor = score>=8?'#2ecc71': score>=7?'#5dade2': score>=6?'#95a5a6': score>=5?'#f39c12':'#e74c3c';
+
+  // Find ln cung name
+  var lnCung='';
+  CUNGS.forEach(function(c){ if(c.chi===ln) lnCung=c.ten+' '+c.icon; });
+
+  var dl1 = M_START[mi];
+  var dl2 = new Date(M_START[mi].getTime()+(M_DAYS[mi]-1)*86400000);
+  var dlStr = dl1.getDate()+'/'+(dl1.getMonth()+1)+' – '+dl2.getDate()+'/'+(dl2.getMonth()+1)+'/2026';
+
+  var html = '';
+
+  // ── Month Header ──
+  html += '<div class="month-hdr">';
+  html += '<div class="mh-left">';
+  html += '<h2>Tháng '+(mi+1)+' Âm · Tháng '+M_NAME[mi]+' · Lưu Nguyệt: <span style="color:var(--gold)">'+ln+'</span></h2>';
+  html += '<div class="mh-meta">📅 Dương lịch: '+dlStr+' &nbsp;|&nbsp; Lưu nguyệt an tại: <strong>'+lnCung+'</strong></div>';
+  html += '</div>';
+  html += '<div class="mh-badge">';
+  html += '<div class="mhb-score" style="color:'+scoreColor+'">'+score+'</div>';
+  html += '<div class="mhb-info"><div class="mhb-grade '+sc_cls+'" style="display:inline-block;padding:2px 8px;border-radius:10px">'+M_GRADE[mi]+'</div><br>/ 10 điểm</div>';
+  html += '</div></div>';
+
+  // ── Stats Row ──
+  html += '<div class="stats-row">';
+  html += '<div class="stat-box"><div class="stat-num sn-great">'+cnt.great+'</div><div class="stat-lbl">⭐ Rất tốt</div></div>';
+  html += '<div class="stat-box"><div class="stat-num sn-good">'+cnt.good+'</div><div class="stat-lbl">✅ Tốt</div></div>';
+  html += '<div class="stat-box"><div class="stat-num sn-mid">'+cnt.mid+'</div><div class="stat-lbl">〰 Bình</div></div>';
+  html += '<div class="stat-box"><div class="stat-num sn-warn">'+cnt.warn+'</div><div class="stat-lbl">⚠ Chú ý</div></div>';
+  html += '<div class="stat-box"><div class="stat-num sn-bad">'+cnt.bad+'</div><div class="stat-lbl">🔴 Xấu</div></div>';
+  html += '</div>';
+
+  // ── Legend ──
+  html += '<div class="legend">';
+  html += '<div class="leg-item"><div class="leg-dot" style="background:#1a7a3c;opacity:.6"></div>⭐ Rất tốt</div>';
+  html += '<div class="leg-item"><div class="leg-dot" style="background:#1a5276;opacity:.6"></div>✅ Tốt</div>';
+  html += '<div class="leg-item"><div class="leg-dot" style="background:var(--bg3);border:1px solid var(--border2)"></div>〰 Trung bình</div>';
+  html += '<div class="leg-item"><div class="leg-dot" style="background:#7d4400;opacity:.6"></div>⚠ Cẩn thận</div>';
+  html += '<div class="leg-item"><div class="leg-dot" style="background:#8b1a12;opacity:.6"></div>🔴 Xấu</div>';
+  html += '<span style="color:var(--text3);font-size:11px">• Nhấn vào ngày để xem phân tích 12 cung</span>';
+  html += '</div>';
+
+  // ── Detail Panel (if selected) ──
+  if(selectedDay && selectedDay.m === currentMonth){
+    html += renderDetail(selectedDay);
+  }
+
+  // ── Calendar ──
+  html += '<div class="cal-wrap">';
+
+  // Day of week headers
+  html += '<div class="cal-dow">';
+  ['T2','T3','T4','T5','T6','T7','CN'].forEach(function(d,i){
+    html += '<div class="cal-dow-cell'+(i===6?' weekend':'')+'">'+(i===6?'<span style="color:#d4875a">'+d+'</span>':d)+'</div>';
+  });
+  html += '</div>';
+
+  // Grid
+  html += '<div class="cal-grid" id="cal-grid">';
+
+  // Padding for first day of month
+  var firstDow = dl1.getDay(); // 0=Sun,1=Mon...
+  var pad = firstDow === 0 ? 6 : firstDow - 1; // Convert to Mon=0 basis
+  for(var p=0;p<pad;p++) html += '<div class="cal-cell empty"></div>';
+
+  // Days
+  days.forEach(function(day){
+    var visible = filterMode==='all' || filterMode===day.rating;
+    var selectedCls = (selectedDay && selectedDay.m===day.m && selectedDay.d===day.d) ? ' selected' : '';
+    var rateCls = 'r-'+day.rating;
+    var weekend = (day.dl.getDay()===0||day.dl.getDay()===6) ? ' weekend' : '';
+    var opacity = visible ? '' : ' no-select';
+    var dlStr2 = day.dl.getDate()+'/'+(day.dl.getMonth()+1);
+    var dotCls = 'dot-'+day.rating;
+
+    html += '<div class="cal-cell '+rateCls+selectedCls+weekend+opacity+'" ';
+    html += 'id="day-'+currentMonth+'-'+day.d+'" ';
+    html += 'onclick="selectDay('+day.m+','+day.d+')" ';
+    html += 'title="'+day.d+'/'+day.m+' Âm · '+day.cc.can+' '+day.cc.chi+' · '+dlStr2+'">';
+    html += '<div class="cell-lday">'+day.d+'</div>';
+    html += '<div class="cell-dl">'+dlStr2+'</div>';
+    html += '<div class="cell-cc">'+day.cc.can[0]+' '+day.cc.chi+'</div>';
+    html += '<div class="cell-dot '+dotCls+'"></div>';
+    html += '</div>';
+  });
+
+  html += '</div></div>'; // cal-grid, cal-wrap
+
+  // ── Detail Panel after calendar ──
+  if(!selectedDay || selectedDay.m !== currentMonth){
+    html += '<div style="text-align:center;padding:24px;color:var(--text3);font-size:12px">👆 Nhấn vào một ngày để xem phân tích chi tiết 12 cung</div>';
+  }
+
+  document.getElementById('main-content').innerHTML = html;
+
+  // Re-render detail below calendar if selected
+  if(selectedDay && selectedDay.m === currentMonth){
+    scrollToDetail();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// RENDER DAY DETAIL
+// ══════════════════════════════════════════════════════════════
+function renderDetail(day){
+  var ln   = LN[day.m-1];
+  var cc   = day.cc;
+  var dlStr = day.dl.getDate()+'/'+(day.dl.getMonth()+1)+'/2026 ('+DOW[day.dl.getDay()]+')';
+  var badge_cls = 'badge-'+day.rating;
+  var badge_txt = day.rating==='great'?'⭐ Rất Tốt' : day.rating==='good'?'✅ Tốt' : day.rating==='mid'?'〰 Trung Bình' : day.rating==='warn'?'⚠ Cẩn Thận' : '🔴 Xấu';
+  var ov_cls = 'ov-'+day.rating;
+
+  var html = '<div class="detail-panel" id="detail-panel">';
+
+  // Header
+  html += '<div class="dp-hdr">';
+  html += '<div class="dp-date">'+day.d+'/'+day.m+'<span style="font-size:14px;color:var(--text3)"> Âm</span></div>';
+  html += '<div class="dp-meta">';
+  html += '<div class="dp-cc">'+cc.can+' '+cc.chi+' · Tháng '+day.m+' Âm (Lưu Nguyệt: '+ln+')</div>';
+  html += '<div class="dp-dl">'+dlStr+'</div>';
+  html += '</div>';
+  html += '<div class="dp-badge '+badge_cls+'">'+badge_txt+'</div>';
+  html += '</div>'; // dp-hdr
+
+  // Body: 12 cung grid
+  html += '<div class="dp-body">';
+  html += '<div class="cung-grid">';
+
+  var bestCungs=[], warnCungs=[];
+
+  CUNGS.forEach(function(c){
+    var rt   = rateC(c, cc.chi, ln);
+    var ct_cls = 'ct-'+rt;
+    var badge_c = rt==='great'?'⭐ Rất Tốt':rt==='good'?'✅ Tốt':rt==='mid'?'〰':rt==='warn'?'⚠ Chú ý':'🔴 Xấu';
+    var bc_style = rt==='great'?'background:#1a7a3c;color:#fff' : rt==='good'?'background:#1a5276;color:#fff' :
+                   rt==='mid' ?'background:#4a4540;color:#ccc' : rt==='warn'?'background:#c8960a;color:#fff' :
+                   'background:#8b1a12;color:#fff';
+
+    if(rt==='great'||rt==='good') bestCungs.push(c.ten);
+    if(rt==='bad'||rt==='warn') warnCungs.push(c.ten);
+
+    // Build relationship tags
+    var rels=[];
+    if(c.chi===cc.chi) rels.push('Ngày kích');
+    if(isXung(c.chi,cc.chi)) rels.push('Ngày xung');
+    if(isTH(c.chi,cc.chi)) rels.push('Tam hợp');
+    if(LUC_HOP[c.chi]===cc.chi) rels.push('Lục hợp');
+    if(c.chi===ln) rels.push('LN đóng');
+    if(isXung(c.chi,ln)) rels.push('LN xung');
+    if(isTH(c.chi,ln)) rels.push('LN tam hợp');
+    if(!rels.length) rels.push('Bình');
+
+    // Generate NX
+    var nx = genNX(c, cc.chi, ln);
+    var adv = CUNG_ADV[c.ten]||{y:'—',n:'—'};
+
+    html += '<div class="cg-card '+ct_cls+'">';
+    html += '<div class="cg-hdr">';
+    html += '<span class="cg-icon">'+c.icon+'</span>';
+    html += '<span class="cg-name">'+c.ten+'</span><span class="cg-chi">'+c.chi+'</span>';
+    html += '<span class="cg-badge" style="'+bc_style+'">'+badge_c+'</span>';
+    html += '</div>';
+    html += '<div class="cg-sao">'+c.sao+'</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px">';
+    rels.forEach(function(r){
+      var rc = r.indexOf('xung')>=0||r.indexOf('Xấu')>=0 ? '#e74c3c' :
+               r.indexOf('đóng')>=0||r.indexOf('kích')>=0||r.indexOf('tam hợp')>=0||r.indexOf('hợp')>=0 ? '#2ecc71' : '#636363';
+      html += '<span style="background:rgba(255,255,255,.06);color:'+rc+';border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:1px 5px;font-size:9.5px;font-weight:700">'+r+'</span>';
+    });
+    html += '</div>';
+    html += '<div class="cg-nx">'+nx+'</div>';
+    html += '<div class="cg-nen">✅ '+adv.y+'</div>';
+    html += '<div class="cg-khong">⛔ '+adv.n+'</div>';
+    html += '</div>';
+  });
+
+  html += '</div>'; // cung-grid
+
+  // Overall summary
+  html += '<div class="day-ov '+ov_cls+'">';
+  html += '<div class="ov-title">'+badge_txt+' — Ngày '+cc.can+' '+cc.chi+' · '+day.d+'/'+day.m+' Âm</div>';
+  if(bestCungs.length) html += '<span style="color:#5dbd77">✦ Cung sáng:</span> '+bestCungs.join(', ')+'. ';
+  if(warnCungs.length) html += '<span style="color:#ff8a7a">⚠ Cung chú ý:</span> '+warnCungs.join(', ')+'. ';
+  html += getOvText(day.rating, bestCungs, warnCungs);
+  html += '</div>';
+
+  html += '</div></div>'; // dp-body, detail-panel
+  return html;
+}
+
+function getOvText(r, best, warn){
+  if(r==='great') return 'Ngày đặc biệt thuận lợi — hầu hết các cung quan trọng đều phát sáng. Hãy tận dụng để ra quyết định, gặp gỡ đối tác và ký kết quan trọng.';
+  if(r==='good')  return 'Ngày khá tốt, dòng chảy hài hòa. Phù hợp để làm việc, đàm phán và mở rộng mối quan hệ.';
+  if(r==='mid')   return 'Ngày bình thường, không có cản trở lớn cũng không có thuận lợi nổi bật. Tập trung công việc thường lệ, không cần lo lắng.';
+  if(r==='warn')  return 'Ngày cần thận trọng — một số cung quan trọng bị tác động tiêu cực. Hạn chế quyết định lớn, kiểm tra kỹ lưỡng trước khi hành động.';
+  return 'Ngày không thuận lợi — nhiều cung bị xung/hung kích. Nên trì hoãn việc quan trọng, tránh tranh luận và các rủi ro lớn.';
+}
+
+function genNX(c, ngayChi, ln){
+  var parts=[], cn=c.chi, n=c.ten, h=c.hung;
+  if(cn===ln) parts.push(h?'LN đóng tại '+n+' — hung tinh phát tác mạnh suốt tháng.':'LN đóng tại '+n+' — cung được kích hoạt tối đa trong tháng.');
+  if(isXung(cn,ln)){ parts.push('LN xung '+n+' — áp lực nền cả tháng.'); if(isXung(cn,ngayChi)) parts.push('<strong style="color:#ff8a7a">Hôm nay xung kép — cẩn thận tối đa.</strong>'); }
+  if(isTH(cn,ln)) parts.push('LN tam hợp '+n+' — được nâng đỡ tốt cả tháng.');
+  if(cn===ngayChi) parts.push(h?'Ngày '+ngayChi+' kích hoạt '+n+' — hung tinh nổi lên hôm nay.':'Ngày '+ngayChi+' kích '+n+' trực tiếp — sao chủ phát huy mạnh.');
+  else if(isXung(cn,ngayChi)&&!isXung(cn,ln)) parts.push('Ngày '+ngayChi+' xung '+n+' — chú ý hôm nay có thể phát sinh vấn đề.');
+  else if(isTH(cn,ngayChi)&&!isTH(cn,ln)) parts.push('Ngày '+ngayChi+' tam hợp '+n+' — được hỗ trợ thêm hôm nay.');
+  else if(LUC_HOP[cn]===ngayChi) parts.push('Ngày '+ngayChi+' lục hợp với '+cn+' — hài hòa, hỗ trợ nhẹ.');
+  if(!parts.length) parts.push('Không có tương tác đặc biệt hôm nay. '+(h?'Hung tinh tạm yên.':'Sao chủ hoạt động bình thường.'));
+  return parts.join(' ');
+}
+
+// ══════════════════════════════════════════════════════════════
+// CONTROLS
+// ══════════════════════════════════════════════════════════════
+function switchMonth(m){
+  currentMonth = m;
+  selectedDay  = null;
+  // Update sidebar
+  document.querySelectorAll('.month-item').forEach(function(el){ el.classList.remove('active'); });
+  var si = document.getElementById('si-'+m);
+  if(si){ si.classList.add('active'); si.scrollIntoView({block:'nearest'}); }
+  // Update mobile tabs
+  document.querySelectorAll('.mtab').forEach(function(el){ el.classList.remove('active'); });
+  var mt = document.getElementById('mt-'+m);
+  if(mt){ mt.classList.add('active'); mt.scrollIntoView({inline:'center',behavior:'smooth'}); }
+  renderMain();
+}
+
+function selectDay(m, d){
+  var day = ALL_DAYS.find(function(x){ return x.m===m && x.d===d; });
+  if(!day) return;
+  if(selectedDay && selectedDay.m===m && selectedDay.d===d){
+    selectedDay = null;
+  } else {
+    selectedDay = day;
+  }
+  renderMain();
+  if(selectedDay) scrollToDetail();
+}
+
+function scrollToDetail(){
+  setTimeout(function(){
+    var el = document.getElementById('detail-panel');
+    if(el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 80);
+}
+
+function setFilter(f){
+  filterMode = f;
+  document.querySelectorAll('.tpbtn').forEach(function(b){ b.classList.remove('on'); });
+  var btn = document.getElementById('btn-'+f);
+  if(btn) btn.classList.add('on');
+  renderMain();
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+
+// Auto-select current or nearest month
+(function(){
+  var now = new Date();
+  for(var i=11;i>=0;i--){
+    if(now >= M_START[i]){ currentMonth = i+1; break; }
+  }
+  if(currentMonth > 12) currentMonth = 1;
+})();
+
+renderSidebar();
+renderMobileTabs();
+renderMain();
+</script>
+
+</body>
+</html>
