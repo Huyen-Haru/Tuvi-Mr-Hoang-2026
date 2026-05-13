@@ -469,6 +469,14 @@ function renderMonth(mNum){
 }
 
 var cachedHTML={};
+
+function clickTab(m){
+  // Chỉ điều hướng trong phạm vi tháng 9–12 của file này
+  if(m < 9 || m > 12) return;
+  var tabBtns = document.querySelectorAll('.tab');
+  var idx = m - 9;
+  showM(m, tabBtns[idx] || null);
+}
 function showM(m,btn){
   if(!cachedHTML[m]) cachedHTML[m]=renderMonth(m);
   document.getElementById('mroot').innerHTML=cachedHTML[m];
