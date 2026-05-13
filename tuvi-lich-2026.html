@@ -468,6 +468,37 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 .ncl-item{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;transition:all .1s}
 .ncl-item:hover{background:var(--bg4)}
 .ncl-item.sel{background:var(--gold-dim);border-left:2px solid var(--gold)}
+
+/* ── DAY PREDICT PANEL ── */
+.day-predict{background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:13px 15px;margin-bottom:16px}
+.dp-truc-line{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--border2)}
+.dp-truc-badge{padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700}
+.dp-than-badge{padding:3px 10px;border-radius:10px;font-size:11px;font-weight:600}
+.truc-g{background:rgba(26,122,60,.2);border:1px solid rgba(26,122,60,.4);color:#5dbd77}
+.truc-r{background:rgba(139,26,18,.2);border:1px solid rgba(139,26,18,.4);color:#ff8a7a}
+.truc-o{background:rgba(125,68,0,.2);border:1px solid rgba(125,68,0,.4);color:#f39c12}
+.than-g{background:rgba(200,150,10,.15);border:1px solid rgba(200,150,10,.3);color:var(--gold)}
+.than-r{background:rgba(58,53,48,.6);border:1px solid rgba(100,90,70,.4);color:var(--text3)}
+.dp-adv{font-size:11px;color:var(--text2);flex:1;line-height:1.5}
+.dp-events-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:600px){.dp-events-grid{grid-template-columns:1fr}}
+.dp-events-col{border-radius:7px;padding:8px 10px}
+.dp-events-col.pos{background:rgba(26,122,60,.07);border:1px solid rgba(26,122,60,.2)}
+.dp-events-col.neg{background:rgba(139,26,18,.07);border:1px solid rgba(139,26,18,.2)}
+.dpe-hdr{font-size:10px;font-weight:700;letter-spacing:.4px;margin-bottom:5px;text-transform:uppercase}
+.dp-events-col.pos .dpe-hdr{color:#5dbd77}
+.dp-events-col.neg .dpe-hdr{color:#ff8a7a}
+.dpe-item{font-size:11px;color:var(--text2);line-height:1.6;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.dpe-item:last-child{border-bottom:none}
+/* ── PER-CUNG EVENT LINE ── */
+.cc-event{font-size:11px;line-height:1.5;padding:5px 9px;margin:3px 0 6px;border-left:2px solid;border-radius:0 5px 5px 0}
+.cc-card.great .cc-event{border-left-color:#2ecc71;background:rgba(26,122,60,.08);color:#9de8b8}
+.cc-card.good .cc-event{border-left-color:#5dade2;background:rgba(26,82,118,.08);color:#97cde8}
+.cc-card.mid .cc-event{border-left-color:#636363;background:rgba(58,53,48,.25);color:var(--text3)}
+.cc-card.warn .cc-event{border-left-color:#f39c12;background:rgba(125,68,0,.08);color:#f5c97a}
+.cc-card.bad .cc-event{border-left-color:#e74c3c;background:rgba(139,26,18,.08);color:#ff9e96}
+/* ── CUNG MONTH CARD PRED ── */
+.cm-pred{font-size:11px;color:var(--text2);line-height:1.6;padding:5px 8px;border-radius:5px;background:rgba(200,150,10,.05);border:1px solid var(--border2);margin-top:5px}
 </style>
 </head>
 <body>
@@ -1252,7 +1283,7 @@ function renderMonth(){
     // Extra context
     var goodDays=st.great+st.good, badDays=st.warn+st.bad;
     h+='<br><span style="color:#5dbd77">Tốt: '+goodDays+' ngày</span> · <span style="color:#ff8a7a">Chú ý: '+badDays+' ngày</span></div>';
-    h+='<div class="cm-strong">✅ '+getNen(c.ten)+'</div>';
+    h+='<div class="cm-pred">'+getCungMonthPred(c,ln)+'</div>';
     h+='</div>';
   });
   h+='</div>';
@@ -1434,6 +1465,8 @@ function renderWeek(){
       if(c.chi===nc) rels.push('kích'); if(isXung(c.chi,nc)) rels.push('xung'); if(isTH(c.chi,nc)) rels.push('tam hợp');
       if(c.chi===ln) rels.push('LN'); if(isXung(c.chi,ln)) rels.push('LN xung'); if(isTH(c.chi,ln)) rels.push('LN hợp');
       h+='<div style="font-size:9.5px;color:var(--text3)">'+( rels.length?rels.join(' · '):'Bình thường' )+'</div>';
+      var ev=getCungEvent(c,nc,ln);
+      if(ev&&ev!==''&&!ev.startsWith('—')) h+='<div style="font-size:9px;color:'+cc2+';margin-top:2px;line-height:1.4">'+ev.replace(/^[☀⚡✨〰🔴⚠—]\s*/,'')+'</div>';
       h+='</div>';
     });
     h+='</div></div></div>';
@@ -1501,6 +1534,9 @@ function renderDay(){
   h+='<div style="font-size:11px;color:var(--text2);line-height:1.6;flex:1">'+TRUC_DESC[truc]+'</div>';
   h+='</div>';
 
+  // ── DAY NARRATIVE — Dự báo sự kiện ──
+  h+=getDaySummary(day, truc, than);
+
   // ── #5 FAMILY SYNASTRY ──
   h+='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center">';
   h+='<span style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Vận khí gia đình:</span>';
@@ -1546,6 +1582,7 @@ function renderDay(){
     h+='<div class="cc-hdr"><span class="cc-ico">'+c.icon+'</span><span class="cc-nm">'+c.ten+'</span><span class="cc-ch">'+c.chi+'</span>';
     h+='<span class="cc-sc badge '+rateBadge(cr)+'">'+rateLabel(cr).replace('⭐ ','').replace('✅ ','').replace('〰 ','').replace('⚠ ','').replace('🔴 ','')+'</span></div>';
     h+='<div class="cc-sao">'+c.sao+'</div>';
+    h+='<div class="cc-event">'+getCungEvent(c,nc,ln)+'</div>';
     h+='<div class="cc-rels">';
     rels.forEach(function(r){h+='<span class="rel" style="color:'+r.c+';border:1px solid '+r.c+'40">'+r.t+'</span>';});
     h+='</div>';
@@ -2132,6 +2169,279 @@ function jExport(){
   var blob=new Blob([JSON.stringify(j,null,2)],{type:'application/json'});
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download='NhatKyTuVi_MrHoang_2026.json';a.click();
+}
+
+// ══════════════════════════════════════════════════════════════
+// DYNAMIC EVENT PREDICTIONS — Per-cung, per-day & per-month
+// ══════════════════════════════════════════════════════════════
+
+// 12 Trực — specific CEO-level advice
+var TRUC_ADV={
+  Kiến:'Ngày KHỞI SỰ — tốt để ký kết, khai trương, bắt đầu dự án mới, nhậm chức. Năng lượng khai mở mạnh.',
+  Trừ:'Ngày TRỪ BỎ — kết thúc hợp đồng cũ, giải quyết tranh chấp tồn đọng, dọn dẹp nhân sự. Không bắt đầu việc mới.',
+  Mãn:'Ngày VIÊN MÃN — thu tiền, nhận hàng, công bố kết quả, hoàn thành milestone. Tốt để thu hoạch.',
+  Bình:'Ngày BÌNH ỔN — họp bàn thường lệ, đàm phán nhẹ nhàng, duy trì tiến độ. Không kỳ vọng đột phá.',
+  Định:'Ngày ĐỊNH VỊ — ký hợp đồng dài hạn, đặt nền móng chiến lược, xây dựng hệ thống. Rất tốt cho CEO.',
+  Chấp:'Ngày CHẤP HÀNH — thực thi những gì đã quyết, cẩn thận pháp lý. Tránh tranh chấp và kiện tụng.',
+  Phá:'Ngày PHÁ VỠ ⛔ — TRÁNH: ký kết, ra mắt, đầu tư, di chuyển quan trọng. Chỉ xử lý việc cũ.',
+  Nguy:'Ngày NGUY HIỂM ⚠ — Đi lại cẩn thận, tránh kiện tụng và mạo hiểm. Không phiêu lưu hôm nay.',
+  Thành:'Ngày THÀNH TỰU ⭐ — MỌI VIỆC đều tốt: ký kết, gặp gỡ, quyết định, đầu tư. Tận dụng tối đa.',
+  Thu:'Ngày THU — Thu hồi kết quả cũ, nhận lại những gì đã đầu tư. Không ra quyết định hoàn toàn mới.',
+  Khai:'Ngày KHAI THÔNG ✨ — Cơ hội đến từ hướng không ngờ. Tốt cho gặp gỡ mới, mở rộng quan hệ.',
+  Bế:'Ngày BẾ TẮC ⛔ — Không bắt đầu dự án mới. Hoàn thiện việc sắp xong, nghỉ ngơi, dọn dẹp.'
+};
+
+// Per-cung event lines for DAY view (keyed by interaction type)
+var CUNG_EV={
+  'Mệnh':{
+    kic:'☀ Thiên Cơ H.Quyền phát sáng — trực giác lãnh đạo ở đỉnh. Quyết định hôm nay chính xác, dứt khoát.',
+    xun:'⚡ Mệnh bị xung — ý chí dao động, tư duy bị gián đoạn. Hoãn quyết định quan trọng, xử lý việc sẵn có.',
+    tha:'✨ Tam phương hỗ trợ Mệnh — ý tưởng của bạn được nhiều phía ủng hộ. Thời điểm tốt để thuyết phục.',
+    lho:'〰 Bề trên/đối tác nhìn thiện cảm hơn bình thường. Tương tác nhẹ nhàng thuận lợi.',
+    bin:'— Mệnh ổn định, không áp lực đặc biệt về lãnh đạo hôm nay.'
+  },
+  'Phụ Mẫu':{
+    kic:'☀ Tử Vi+Thiên Phú sáng — bề trên hỗ trợ mạnh. Xin phê duyệt, gặp nhà đầu tư, báo cáo cấp trên rất thuận.',
+    xun:'⚡ Phụ Mẫu bị xung — bề trên có thể phản đối hoặc không có mặt hôm nay. Không cầu cạnh, tự xử lý.',
+    tha:'✨ Nguồn lực từ trên xuống bất ngờ — ngân sách, dự án mới, hỗ trợ từ cấp trên hoặc ngân hàng.',
+    lho:'〰 Quan hệ bề trên hài hòa nhẹ — phù hợp check-in tiến độ.',
+    bin:'— Phụ Mẫu bình thường, bề trên không có gì đặc biệt hôm nay.'
+  },
+  'Phúc Đức':{
+    kic:'☀ Thái Âm+Đào Hoa kích — cảm xúc và thẩm mỹ phát sáng. Sáng tạo, trực giác, gặp gỡ phụ nữ rất thuận.',
+    xun:'⚡ Phúc Đức bị xung — nội tâm bất an, stress ẩn nổi lên. Tránh quyết định dựa hoàn toàn trên cảm xúc.',
+    tha:'✨ Phúc lành lan tỏa — việc thiện, chia sẻ, giúp đỡ người khác mang lại kết quả tốt hôm nay.',
+    lho:'〰 Tâm trạng nhẹ nhàng, bình yên — ngày tốt cho thiền định, nghỉ ngơi sáng tạo.',
+    bin:'— Phúc Đức trung bình, tinh thần ổn định bình thường.'
+  },
+  'Điền Trạch':{
+    kic:'⚠ Tham Lang+Địa Kiếp kích trong cung hung — vấn đề nhà cửa/hợp đồng BĐS nổi lên. Kiểm tra, sửa chữa nhỏ. Không mua BĐS.',
+    xun:'⚠ Điền Trạch bị xung thêm — tin không tốt về tài sản cố định. Hủy/hoãn mọi giao dịch nhà đất hôm nay.',
+    tha:'〰 BĐS/gia sản được hỗ trợ nhẹ — gia hạn hợp đồng thuê ổn, không mua mới.',
+    lho:'〰 Nhà cửa yên lặng — không có biến động bất ngờ hôm nay.',
+    bin:'— Điền Trạch bình lặng, không lo chuyện nhà cửa hôm nay.'
+  },
+  'Huynh Đệ':{
+    kic:'⚡ Phá Quân kích — bạn bè/đồng nghiệp sôi động, khó đoán. Tụ tập được nhưng tuyệt đối không bàn tiền bạc.',
+    xun:'⚡ Huynh Đệ bị xung — đồng nghiệp có thể gây phiền toái hoặc nhờ giúp khó từ chối. Giữ khoảng cách.',
+    tha:'✨ Bạn bè hỗ trợ bất ngờ — gặp lại người quen có thể mở ra cơ hội hôm nay.',
+    lho:'〰 Quan hệ bạn bè/đồng nghiệp hài hòa — tốt cho làm việc nhóm thông thường.',
+    bin:'— Huynh Đệ bình, không cho vay, không bảo lãnh hôm nay.'
+  },
+  'Nô Bộc':{
+    kic:'🔴 Song Kỵ+Thái Tuế kích — nhân sự/đối tác có thể làm trái hoặc phản trắc HÔM NAY. Kiểm tra tức thì.',
+    xun:'🔴 Nô Bộc bị xung — đối tác thất hứa, nhân sự làm sai lệnh. Yêu cầu bằng chứng, không tin lời miệng.',
+    tha:'⚡ Đội nhóm có thể phối hợp được nhưng không bền — chủ động kích hoạt và giám sát chặt.',
+    lho:'〰 Đối tác/nhân sự tương đối ổn hôm nay — theo dõi bình thường.',
+    bin:'— Nô Bộc trong ngưỡng kiểm soát, Song Kỵ tạm yên hôm nay.'
+  },
+  'Thiên Di':{
+    kic:'☀ Thiên Lương phát sáng — đi công tác, gặp đối tác ngoài rất thuận. Đi xa có kết quả tốt.',
+    xun:'⚡ Thiên Di bị xung — di chuyển gặp trở ngại, dễ trễ/lỡ hẹn. Nếu được hãy hoãn chuyến đi.',
+    tha:'✨ Mối quan hệ đối tác ngoài được nâng đỡ — cơ hội mở rộng thị trường qua giới thiệu.',
+    lho:'〰 Đường đi thuận nhẹ — không trở ngại lớn khi di chuyển hôm nay.',
+    bin:'— Thiên Di ổn, đi lại bình thường không vấn đề.'
+  },
+  'Tật Ách':{
+    kic:'⚡ Thất Sát+Thiên Mã kích — năng lượng bộc phát mạnh, dễ làm quá sức. Tập thể thao tốt nhưng kiểm soát cường độ.',
+    xun:'⚠ Tật Ách bị xung — sức khỏe dễ bị tác động đột xuất. Nghỉ ngơi đủ, tránh thể thao mạo hiểm.',
+    tha:'✨ Sức khỏe được hỗ trợ — phục hồi nhanh, năng lượng dồi dào hôm nay.',
+    lho:'〰 Thân thể khỏe ổn nhẹ — không lo vấn đề y tế hôm nay.',
+    bin:'— Tật Ách trung bình, sức khỏe không đặc biệt.'
+  },
+  'Tử Tức':{
+    kic:'☀ Vũ Khúc+Song Quyền kích — con cái thông minh nổi bật hôm nay, quyết định về con rất thuận.',
+    xun:'⚡ Tử Tức bị xung — con cái không nghe lời hoặc gặp vấn đề học hành. Kiên nhẫn, không kỷ luật nặng.',
+    tha:'✨ Sáng tạo và con cái được nâng đỡ — ý tưởng mới dễ thành hiện thực.',
+    lho:'〰 Quan hệ con cái hài hòa — ngày vui vẻ bình thường cùng gia đình.',
+    bin:'— Tử Tức ổn, con cái không có vấn đề nổi bật hôm nay.'
+  },
+  'Tài Bạch':{
+    kic:'☀ Bính Lộc+DV.Lộc Tồn kích — NGÀY THU TIỀN MẠNH NHẤT. Yêu cầu thanh toán, chốt deal, nhận đầu tư ngay hôm nay.',
+    xun:'🔴 Tài Bạch bị xung — dòng tiền gián đoạn, chi tiêu bất ngờ. Không đầu tư, không ký tài chính lớn hôm nay.',
+    tha:'✨ Tài vận tam phương — cơ hội thu tiền từ nhiều nguồn, đặc biệt qua mối quan hệ giới thiệu.',
+    lho:'〰 Thu nhỏ thuận lợi — dòng tiền đều đặn, không đột biến.',
+    bin:'— Tài Bạch bình lặng, không biến động tài chính đặc biệt.'
+  },
+  'Phu Thê':{
+    kic:'☀ Thái Dương+Hóa Lộc kích — vợ rạng rỡ, gia đình thuận hòa. Hẹn hò, tặng quà, chia sẻ thành quả rất tốt.',
+    xun:'⚡ Phu Thê bị xung — dễ cáu gắt với vợ hoặc có bất đồng nhỏ. Về nhà sớm, không tranh luận tiền.',
+    tha:'✨ Gia đình được nâng đỡ — tin vui từ nhà, mối quan hệ vợ chồng thêm gắn kết.',
+    lho:'〰 Vợ chồng hài hòa nhẹ — ngày bình thường tốt cho gia đình.',
+    bin:'— Phu Thê ổn, không có biến động hôn nhân hôm nay.'
+  },
+  'Quan Lộc':{
+    kic:'☀ Song Khoa+Văn Xương kích — sự nghiệp sáng ngời. Đàm phán, ký kết, báo cáo đều thuận. Tên tuổi được ghi nhận.',
+    xun:'🔴 Quan Lộc bị xung (Ngọ↔Tý) — sự nghiệp bị áp lực mạnh. Tránh đối đầu sếp, không ký hợp đồng lớn.',
+    tha:'✨ Sự nghiệp được hậu thuẫn — hợp đồng/thỏa thuận có hỗ trợ rõ ràng hôm nay.',
+    lho:'〰 Công việc thuận nhẹ — tiến độ đều đặn, không vấn đề lớn.',
+    bin:'— Quan Lộc bình thường, sự nghiệp không biến động đặc biệt.'
+  }
+};
+
+// Per-cung event lines for MONTH view (keyed by LN relationship)
+var CUNG_MONTH_EV={
+  'Mệnh':{
+    kic:'LN an tại Mệnh — cả tháng lãnh đạo ở cao điểm, quyết định sắc bén. Tháng của CEO — triển khai chiến lược lớn.',
+    xun:'LN xung Mệnh — ý chí bị thách thức cả tháng. Kiên định đường hướng, tránh tranh luận bốc đồng.',
+    tha:'LN tam phương Mệnh — quyết định tháng này được nhiều phía ủng hộ mạnh mẽ.',
+    lho:'LN lục hợp Mệnh — lãnh đạo thuận hòa, không áp lực lớn cả tháng.',
+    bin:'Mệnh không bị tác động đặc biệt tháng này — lãnh đạo theo nhịp bình thường.'
+  },
+  'Phụ Mẫu':{
+    kic:'LN an tại Phụ Mẫu — bề trên, nhà đầu tư hỗ trợ mạnh cả tháng. Tốt nhất để xin vốn, phê duyệt dự án lớn.',
+    xun:'LN xung Phụ Mẫu — bề trên không ủng hộ cả tháng. Tự lực cánh sinh, không cầu cạnh cấp trên.',
+    tha:'LN hỗ trợ Phụ Mẫu — nguồn lực từ trên có thể đến bất ngờ tháng này.',
+    lho:'LN lục hợp Phụ Mẫu — quan hệ bề trên hài hòa, phù hợp báo cáo tiến độ.',
+    bin:'Phụ Mẫu bình thường tháng này — bề trên không có biến động đặc biệt.'
+  },
+  'Phúc Đức':{
+    kic:'LN an tại Phúc Đức — cảm xúc và trực giác phát sáng cả tháng. Tháng tốt cho sáng tạo, thẩm mỹ, tâm linh.',
+    xun:'LN xung Phúc Đức — nội tâm bất an cả tháng. Cần thiền định và nghỉ ngơi đúng mức.',
+    tha:'LN hỗ trợ Phúc Đức — phúc lành lan rộng, tháng tốt cho việc thiện, từ thiện.',
+    lho:'LN lục hợp Phúc Đức — tâm trạng bình yên nhẹ nhàng tháng này.',
+    bin:'Phúc Đức bình thường — tinh thần ổn định tháng này, không lo đặc biệt.'
+  },
+  'Điền Trạch':{
+    kic:'LN an tại Điền Trạch (hung) — vấn đề nhà cửa/BĐS nổi lên cả tháng. Cẩn thận hợp đồng, không mua bán tài sản lớn.',
+    xun:'LN xung Điền Trạch — nguy cơ BĐS/tài sản cố định cả tháng. Hủy/hoãn mọi giao dịch nhà đất.',
+    tha:'LN hỗ trợ nhẹ Điền Trạch — gia hạn hợp đồng thuê ổn định, không mua BĐS mới tháng này.',
+    lho:'LN lục hợp Điền Trạch — nhà cửa yên lặng, không biến động lớn.',
+    bin:'Điền Trạch bình lặng tháng này — không lo chuyện BĐS, nhà cửa.'
+  },
+  'Huynh Đệ':{
+    kic:'LN an tại Huynh Đệ — bạn bè/đồng nghiệp sôi động cả tháng. Tụ tập được, tuyệt đối không bàn tiền bạc, không bảo lãnh.',
+    xun:'LN xung Huynh Đệ — đồng nghiệp gây phiền nhiễu cả tháng. Giữ khoảng cách lành mạnh.',
+    tha:'LN hỗ trợ Huynh Đệ — bạn bè giới thiệu cơ hội bất ngờ tháng này.',
+    lho:'LN lục hợp Huynh Đệ — quan hệ đồng nghiệp hài hòa, tốt cho làm việc nhóm.',
+    bin:'Huynh Đệ bình thường, không cho vay, không bảo lãnh tháng này.'
+  },
+  'Nô Bộc':{
+    kic:'LN an tại Nô Bộc (Song Kỵ+Thái Tuế) — THÁNG NGUY HIỂM NHẤT nhân sự và đối tác. Kiểm tra liên tục, không ký thỏa thuận đối tác mới.',
+    xun:'LN xung Nô Bộc — nhân sự làm sai, đối tác thất hứa cả tháng. Yêu cầu văn bản cam kết tất cả.',
+    tha:'LN hỗ trợ Nô Bộc — đội nhóm có thể phối hợp được nhưng vẫn cần giám sát.',
+    lho:'LN lục hợp Nô Bộc — đối tác/nhân sự tương đối ổn, theo dõi thường xuyên.',
+    bin:'Nô Bộc trong tầm kiểm soát tháng này.'
+  },
+  'Thiên Di':{
+    kic:'LN an tại Thiên Di — đi xa, công tác, gặp đối tác ngoài rất thuận cả tháng. Tốt nhất cho mở rộng thị trường.',
+    xun:'LN xung Thiên Di — di chuyển gặp trở ngại liên tục tháng này. Hạn chế đi xa, tập trung nội bộ.',
+    tha:'LN hỗ trợ Thiên Di — giao thương bên ngoài thuận, quan hệ đối tác mở rộng tháng này.',
+    lho:'LN lục hợp Thiên Di — đường đi thuận, không vấn đề lớn khi di chuyển.',
+    bin:'Thiên Di bình thường, đi lại không đặc biệt tháng này.'
+  },
+  'Tật Ách':{
+    kic:'LN an tại Tật Ách — sức khỏe cần chú ý cả tháng. Kiểm tra sức khỏe định kỳ, không làm quá sức.',
+    xun:'LN xung Tật Ách — nguy cơ bệnh tật hoặc chấn thương cao hơn bình thường. Nghỉ ngơi đủ, tránh mạo hiểm.',
+    tha:'LN hỗ trợ Tật Ách — sức khỏe và năng lượng dồi dào tháng này.',
+    lho:'LN lục hợp Tật Ách — thân thể khỏe ổn, không lo vấn đề y tế.',
+    bin:'Tật Ách bình thường, sức khỏe không đặc biệt tháng này.'
+  },
+  'Tử Tức':{
+    kic:'LN an tại Tử Tức — con cái thông minh nổi bật cả tháng. Tin vui từ con cái, quyết định liên quan con rất thuận.',
+    xun:'LN xung Tử Tức — con cái không nghe lời hoặc gặp khó khăn học hành. Kiên nhẫn, không kỷ luật nặng.',
+    tha:'LN hỗ trợ Tử Tức — sáng tạo và con cái được nâng đỡ, ý tưởng mới dễ thành công.',
+    lho:'LN lục hợp Tử Tức — quan hệ con cái hài hòa tháng này.',
+    bin:'Tử Tức bình thường, con cái không có biến động lớn tháng này.'
+  },
+  'Tài Bạch':{
+    kic:'LN an tại Tài Bạch — THÁNG VÀNG THU TIỀN. Bính Lộc+DV.Lộc Tồn phát tối đa. Mọi giao dịch tài chính đều thuận.',
+    xun:'LN xung Tài Bạch — dòng tiền bị gián đoạn cả tháng. Không đầu tư lớn, không ký tài chính mới.',
+    tha:'LN tam phương Tài Bạch — tài vận được nâng đỡ từ nhiều hướng, thu qua mối quan hệ.',
+    lho:'LN lục hợp Tài Bạch — thu nhỏ đều đặn, dòng tiền ổn tháng này.',
+    bin:'Tài Bạch bình thường, không biến động tài chính đặc biệt.'
+  },
+  'Phu Thê':{
+    kic:'LN an tại Phu Thê — vợ và gia đình rạng rỡ cả tháng. Tốt nhất cho du lịch gia đình, chia sẻ thành quả.',
+    xun:'LN xung Phu Thê — tháng cẩn thận hôn nhân. Về nhà sớm, không tranh cãi tiền bạc.',
+    tha:'LN hỗ trợ Phu Thê — gia đình hạnh phúc, tin vui có thể đến tháng này.',
+    lho:'LN lục hợp Phu Thê — vợ chồng hài hòa nhẹ nhàng tháng này.',
+    bin:'Phu Thê ổn, không biến động hôn nhân tháng này.'
+  },
+  'Quan Lộc':{
+    kic:'LN an tại Quan Lộc — sự nghiệp sáng ngời cả tháng. Ký hợp đồng, đàm phán, thăng tiến đều rất thuận.',
+    xun:'LN xung Quan Lộc — sự nghiệp bị áp lực mạnh cả tháng. Không ký hợp đồng lớn, không đối đầu sếp.',
+    tha:'LN hỗ trợ Quan Lộc — hợp đồng/sự nghiệp được hậu thuẫn rõ ràng tháng này.',
+    lho:'LN lục hợp Quan Lộc — công việc thuận nhẹ, tiến độ đều đặn tháng này.',
+    bin:'Quan Lộc bình thường, sự nghiệp không biến động đặc biệt tháng này.'
+  }
+};
+
+function getCungEvent(c, nc, ln){
+  var ev=CUNG_EV[c.ten]; if(!ev) return '';
+  var cn=c.chi;
+  if(cn===nc) return ev.kic;
+  if(isXung(cn,nc)) return ev.xun;
+  if(isTH(cn,nc)) return ev.tha;
+  if(LUC_HOP[cn]===nc) return ev.lho;
+  return ev.bin;
+}
+
+function getCungMonthPred(c, ln){
+  var ev=CUNG_MONTH_EV[c.ten]; if(!ev) return getNen(c.ten);
+  var cn=c.chi;
+  if(cn===ln) return ev.kic;
+  if(isXung(cn,ln)) return ev.xun;
+  if(isTH(cn,ln)) return ev.tha;
+  if(LUC_HOP[cn]===ln) return ev.lho;
+  return ev.bin;
+}
+
+// Generate full day narrative summary
+function getDaySummary(day, truc, than){
+  var nc=day.cc.chi, ln=LN[day.m-1];
+  var isHD=isHoangDao(than);
+  var trucType=TRUC_TYPE[truc];
+
+  // Identify key activated/pressured cungs by today's chi
+  var dayPos=[], dayNeg=[];
+  CUNGS.forEach(function(c){
+    var cn=c.chi;
+    if(cn===nc){
+      if(!c.hung) dayPos.push(c);
+      else dayNeg.push(c);
+    } else if(isXung(cn,nc)){
+      if(c.hung) dayNeg.push(c); else dayNeg.push(c);
+    } else if(isTH(cn,nc)&&!c.hung){
+      dayPos.push(c);
+    }
+  });
+  // Deduplicate
+  var seen={};
+  dayPos=dayPos.filter(function(c){if(seen[c.ten])return false;seen[c.ten]=1;return true;});
+  var seen2={};
+  dayNeg=dayNeg.filter(function(c){if(seen2[c.ten])return false;seen2[c.ten]=1;return true;});
+
+  var h='<div class="day-predict">';
+  // Trực + Thần badge line
+  h+='<div class="dp-truc-line">';
+  h+='<span class="dp-truc-badge '+(trucType==='good'?'truc-g':trucType==='bad'?'truc-r':'truc-o')+'">'+truc+'</span>';
+  h+='<span class="dp-than-badge '+(isHD?'than-g':'than-r')+'">'+(isHD?'☀ Hoàng Đạo':'🌑 Hắc Đạo')+' — '+than+'</span>';
+  h+='<span class="dp-adv">'+TRUC_ADV[truc]+'</span>';
+  h+='</div>';
+
+  if(dayPos.length||dayNeg.length){
+    h+='<div class="dp-events-grid">';
+    if(dayPos.length){
+      h+='<div class="dp-events-col pos">';
+      h+='<div class="dpe-hdr">✅ Phát sáng hôm nay — nên làm</div>';
+      dayPos.slice(0,4).forEach(function(c){
+        h+='<div class="dpe-item">'+c.icon+' <strong>'+c.ten+'</strong> — '+getCungEvent(c,nc,ln)+'</div>';
+      });
+      h+='</div>';
+    }
+    if(dayNeg.length){
+      h+='<div class="dp-events-col neg">';
+      h+='<div class="dpe-hdr">⚠ Cần thận trọng hôm nay</div>';
+      dayNeg.slice(0,3).forEach(function(c){
+        h+='<div class="dpe-item">'+c.icon+' <strong>'+c.ten+'</strong> — '+getCungEvent(c,nc,ln)+'</div>';
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+  }
+  h+='</div>';
+  return h;
 }
 
 // ══════════════════════════════════════════════════════════════
