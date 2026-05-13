@@ -395,10 +395,22 @@ function getNen(ten){var k=ten.replace(' ','_');return CUNG_NEN[k]||'—';}
 function getKhong(ten){var k=ten.replace(' ','_');return CUNG_KHONG[k]||'—';}
 
 var LN=['Dần','Mão','Thìn','Tị','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi','Tý','Sửu'];
-var M_START=[new Date(2026,0,29),new Date(2026,1,27),new Date(2026,2,28),new Date(2026,3,26),
-  new Date(2026,4,24),new Date(2026,5,22),new Date(2026,6,22),new Date(2026,7,19),
-  new Date(2026,8,17),new Date(2026,9,16),new Date(2026,10,14),new Date(2026,11,13)];
-var M_DAYS=[30,29,28,30,29,30,27,29,29,28,29,28];
+// Tết Bính Ngọ = 17/02/2026. Xác nhận: 13/05/2026 DL = 27/3 âm → T3 bắt đầu 17/04/2026 ✓
+var M_START=[
+  new Date(2026,1,17),  // T1  Giêng:  17/02/2026 (Tết Bính Ngọ)
+  new Date(2026,2,19),  // T2  Hai:    19/03/2026
+  new Date(2026,3,17),  // T3  Ba:     17/04/2026  ← xác nhận bởi người dùng
+  new Date(2026,4,17),  // T4  Tư:     17/05/2026
+  new Date(2026,5,15),  // T5  Năm:    15/06/2026
+  new Date(2026,6,15),  // T6  Sáu:    15/07/2026
+  new Date(2026,7,13),  // T7  Bảy:    13/08/2026
+  new Date(2026,8,11),  // T8  Tám:    11/09/2026
+  new Date(2026,9,11),  // T9  Chín:   11/10/2026
+  new Date(2026,10,9),  // T10 Mười:   09/11/2026
+  new Date(2026,11,9),  // T11 M.Một:  09/12/2026
+  new Date(2027,0,7)    // T12 Chạp:   07/01/2027
+];
+var M_DAYS=[30,29,30,29,30,29,29,30,29,30,29,30];
 var M_NAME=['Giêng','Hai','Ba','Tư','Năm','Sáu','Bảy','Tám','Chín','Mười','Mười Một','Chạp'];
 var M_SCORE=[8,9,6,5,3,6,6,8,9,8,9,8];
 var M_GRADE=['Tốt','Rất Tốt','Trung Bình','Cẩn Thận','Xấu Nhất','Trung Bình','Trung Bình','Tốt','Vàng','Tốt','Rất Tốt','Tốt'];
