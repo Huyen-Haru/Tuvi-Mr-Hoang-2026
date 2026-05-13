@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phân Tích 12 Tháng Âm Lịch 2026 — Lá Số Mr. Hoàng</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap');
+:root{
+  --ink:#1a1614;--paper:#faf8f4;--paper2:#f3f0ea;--border:#d4c9b0;
+  --gold:#b8860b;--gold-lt:#f5e9c4;--amber:#7d5a0a;
+  --red:#c0392b;--red-lt:#fde8e6;--red-dk:#8b1a12;
+  --blue:#1a5276;--blue-lt:#d6eaf8;
+  --green:#1e6b35;--green-lt:#d5f0dc;
+  --orange:#7d4000;--orange-lt:#fef3cd;
+  --gray:#5d5a56;--gray-lt:#eeece8;
+  --purple:#4a235a;--purple-lt:#ede0f5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--paper);color:var(--ink);font-size:13px;line-height:1.6}
+.page{max-width:960px;margin:0 auto;padding:24px 16px 80px}
+a.back{display:inline-flex;align-items:center;gap:6px;color:var(--amber);font-size:12px;font-weight:600;text-decoration:none;margin-bottom:20px}
+
+.hero{text-align:center;padding:28px 16px 20px;border-bottom:2px solid var(--gold);margin-bottom:24px}
+.hero h1{font-family:'Noto Serif',serif;font-size:21px;color:var(--gold);margin-bottom:7px}
+.hero-sub{font-size:12px;color:var(--gray)}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:20px;justify-content:center}
+.tab{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;
+  color:var(--gray);font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500}
+.tab.active,.tab:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+.tab.r-xau{border-color:var(--red);color:var(--red)}
+.tab.r-xau.active,.tab.r-xau:hover{background:var(--red);color:#fff}
+.tab.r-tot{border-color:var(--green);color:var(--green)}
+.tab.r-tot.active,.tab.r-tot:hover{background:var(--green);color:#fff}
+
+/* MONTH SECTION */
+.msec{display:none}
+.msec.show{display:block}
+
+/* MONTH HEADER */
+.mhdr{
+  background:linear-gradient(135deg,#1a1208 0%,#2d1f08 100%);
+  color:#f5e9c4;border-radius:10px;padding:18px 22px;margin-bottom:18px;
+}
+.mhdr-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.mhdr-left h2{font-family:'Noto Serif',serif;font-size:18px;color:#f5d060;margin-bottom:4px}
+.mhdr-left .dates{font-size:11px;color:#c8b882}
+.mhdr-score{
+  background:rgba(255,255,255,.12);border-radius:8px;padding:8px 14px;text-align:center;min-width:80px;
+}
+.ms-num{font-size:26px;font-weight:700;color:#f5d060;line-height:1}
+.ms-lbl{font-size:10px;color:#c8b882;margin-top:2px}
+.mhdr-tags{display:flex;flex-wrap:wrap;gap:5px}
+.mt{border-radius:3px;padding:2px 8px;font-size:10.5px;font-weight:600}
+.mt-g{background:rgba(46,204,113,.2);color:#5dbd77}
+.mt-r{background:rgba(192,57,43,.25);color:#ff8a7a}
+.mt-y{background:rgba(212,170,80,.2);color:#d4aa50}
+.mt-b{background:rgba(26,82,118,.25);color:#7ec8ec}
+
+/* CUNG TABLE */
+.ct{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:12px}
+.ct th{background:var(--paper2);border:1px solid var(--border);padding:6px 9px;
+  font-weight:600;font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.3px}
+.ct td{border:1px solid var(--border);padding:8px 10px;vertical-align:top}
+.ct tr:nth-child(even) td{background:rgba(0,0,0,.012)}
+.tr-tot td{background:#edf8f0!important}
+.tr-xau td{background:#fdf0ee!important}
+.tr-warn td{background:#fef9ed!important}
+.tr-mid td{background:#f5f3ef!important}
+.cname{font-weight:700;font-size:12px}
+.cchi{font-size:10px;color:var(--amber);font-weight:700;margin-left:3px}
+.csao{font-size:10px;color:var(--gray);font-style:italic;margin-top:1px}
+.rel-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.rt{display:inline-block;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px}
+.rt-g{background:var(--green-lt);color:var(--green);border:1px solid #a0d8a8}
+.rt-r{background:var(--red-lt);color:var(--red);border:1px solid #e8a0a0}
+.rt-y{background:var(--orange-lt);color:var(--orange);border:1px solid #d4aa50}
+.rt-b{background:var(--blue-lt);color:var(--blue);border:1px solid #9ec8ec}
+.rt-m{background:var(--gray-lt);color:var(--gray);border:1px solid #ccc}
+.cnx{font-size:11.5px;line-height:1.6;margin-top:4px}
+.nens{font-size:11px;color:var(--green);margin-top:3px}
+.khong{font-size:11px;color:var(--red);margin-top:2px}
+.crating{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10.5px;font-weight:700;margin-top:3px}
+.cr-tot{background:var(--green);color:#fff}
+.cr-kha{background:var(--blue);color:#fff}
+.cr-mid{background:var(--gray);color:#fff}
+.cr-can{background:#c8960a;color:#fff}
+.cr-xau{background:var(--red);color:#fff}
+
+/* OVERALL BOX */
+.ovbox{border-radius:8px;padding:12px 16px;margin-bottom:16px;border-left:4px solid;font-size:12px;line-height:1.7}
+.ov-tot{background:var(--green-lt);border-color:var(--green);color:var(--green)}
+.ov-kha{background:var(--blue-lt);border-color:var(--blue);color:var(--blue)}
+.ov-mid{background:var(--gray-lt);border-color:var(--gray);color:var(--gray)}
+.ov-warn{background:var(--orange-lt);border-color:#c8960a;color:var(--orange)}
+.ov-xau{background:var(--red-lt);border-color:var(--red);color:var(--red-dk)}
+.ov-title{font-weight:700;font-size:12.5px;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.ov-body{color:var(--ink)}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:20px 0}
+</style>
+</head>
+<body>
+<div class="page">
+<a href="index.html" class="back">← Trang chủ</a>
+
+<div class="hero">
+  <h1>📆 Phân Tích 12 Tháng Âm Lịch 2026</h1>
+  <div class="hero-sub">Lá số Mr. Hoàng · Năm Bính Ngọ · Lưu nguyệt an từng cung × tác động 12 cung × khuyến cáo thực tế</div>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="tab r-tot active" onclick="showMonth(1,this)">T1 Dần ✅</button>
+  <button class="tab r-tot" onclick="showMonth(2,this)">T2 Mão ⭐</button>
+  <button class="tab" onclick="showMonth(3,this)">T3 Thìn 〰</button>
+  <button class="tab r-xau" onclick="showMonth(4,this)">T4 Tị ⚠</button>
+  <button class="tab r-xau" onclick="showMonth(5,this)">T5 Ngọ 🔴</button>
+  <button class="tab" onclick="showMonth(6,this)">T6 Mùi 〰</button>
+  <button class="tab" onclick="showMonth(7,this)">T7 Thân 〰</button>
+  <button class="tab r-tot" onclick="showMonth(8,this)">T8 Dậu ✅</button>
+  <button class="tab r-tot" onclick="showMonth(9,this)">T9 Tuất ⭐</button>
+  <button class="tab r-tot" onclick="showMonth(10,this)">T10 Hợi ✅</button>
+  <button class="tab r-tot" onclick="showMonth(11,this)">T11 Tý ⭐</button>
+  <button class="tab" onclick="showMonth(12,this)">T12 Sửu ✅</button>
+</div>
+
+<div id="m-root"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// DATA: 12 CUNG LÁ SỐ MR. HOÀNG
+// ══════════════════════════════════════════════════════
+var CUNGS=[
+  {chi:'Sửu',ten:'Mệnh',icon:'🧭',sao:'Thiên Cơ(Đ), Thiên Hình, L.H.Quyền, H.Quyền năm, Long Đức',
+   tot:true,hung:false,key:'menh'},
+  {chi:'Dần',ten:'Phụ Mẫu',icon:'👴',sao:'Tử Vi(M), Thiên Phú(M), Ân Quang, Thiên Việt, DV.T.Mã',
+   tot:true,hung:false,key:'phumu'},
+  {chi:'Mão',ten:'Phúc Đức',icon:'🌸',sao:'Thái Âm(H), Hóa Khoa B, Đào Hoa, Hy Thần, Thiên Hi',
+   tot:true,hung:false,key:'phucduc'},
+  {chi:'Thìn',ten:'Điền Trạch',icon:'🏠',sao:'Tham Lang(V), Địa Kiếp, Bệnh Phù, Thiên La, L.Đà La',
+   tot:false,hung:true,key:'dientrac'},
+  {chi:'Tị',ten:'Huynh Đệ',icon:'🤝',sao:'Phá Quân(M), Thiên Khốc, Thiên Hư, Thiên Giải, Tướng Quân',
+   tot:false,hung:false,key:'huynhde'},
+  {chi:'Ngọ',ten:'Nô Bộc',icon:'👥',sao:'Liêm Trinh(V), T.Tướng(V), Thái Tuế, Song Kỵ, Thiên Khôi',
+   tot:false,hung:true,key:'noboc'},
+  {chi:'Mùi',ten:'Thiên Di',icon:'🚀',sao:'Thiên Lương(Đ), Quốc Ân, Giải Thần, Phượng Các, Bệnh Phù',
+   tot:true,hung:false,key:'thiendi'},
+  {chi:'Thân',ten:'Tật Ách',icon:'🏥',sao:'Thất Sát(M), Tả Phù, Thiên Mã(Đ), Lộc Tồn(H), Bác Sĩ',
+   tot:false,hung:false,key:'tatach'},
+  {chi:'Dậu',ten:'Tử Tức',icon:'👶',sao:'Vũ Khúc(M), Hóa Quyền (DV+B), Long Trì, Thanh Long, Hoa Cái',
+   tot:true,hung:false,key:'tutuc'},
+  {chi:'Tuất',ten:'Tài Bạch',icon:'💰',sao:'Thiên Đồng(H), Bính Lộc, DV.Lộc Tồn, Thiên Mã(Đ), Kinh Dương',
+   tot:true,hung:false,key:'taibac'},
+  {chi:'Hợi',ten:'Phu Thê',icon:'❤️',sao:'Thái Dương(H), Hóa Lộc B, L.Thiên Khôi, Nguyệt Đức, Tiểu Hao',
+   tot:true,hung:false,key:'phute'},
+  {chi:'Tý',ten:'Quan Lộc',icon:'💼',sao:'Cự Môn(H), Văn Xương, Song Khoa(DV+B), L.Lộc Tồn, Đại Hao',
+   tot:true,hung:false,key:'quanloc'},
+];
+
+var CHI_IDX={Tý:0,Sửu:1,Dần:2,Mão:3,Thìn:4,Tị:5,Ngọ:6,Mùi:7,Thân:8,Dậu:9,Tuất:10,Hợi:11};
+var CHI_NAME=['Tý','Sửu','Dần','Mão','Thìn','Tị','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi'];
+var LUC_HOP={Tý:'Sửu',Sửu:'Tý',Dần:'Hợi',Hợi:'Dần',Mão:'Tuất',Tuất:'Mão',Thìn:'Dậu',Dậu:'Thìn',Tị:'Thân',Thân:'Tị',Ngọ:'Mùi',Mùi:'Ngọ'};
+var TAM_HOP=[[2,6,10],[5,9,1],[8,0,4],[11,3,7]];
+
+function isXung(c1,c2){return Math.abs(CHI_IDX[c1]-CHI_IDX[c2])===6;}
+function isTamHop(c1,c2){
+  var i1=CHI_IDX[c1],i2=CHI_IDX[c2];
+  for(var g=0;g<TAM_HOP.length;g++)if(TAM_HOP[g].indexOf(i1)>=0&&TAM_HOP[g].indexOf(i2)>=0)return true;
+  return false;
+}
+function isHop(c1,c2){return LUC_HOP[c1]===c2;}
+
+// Lưu nguyệt: T1=Dần... T12=Sửu
+var LUU_NGUYET=['Dần','Mão','Thìn','Tị','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi','Tý','Sửu'];
+
+// Dương lịch tương ứng 2026
+var DL=[
+  '29/01–26/02/2026','27/02–27/03/2026','28/03–25/04/2026',
+  '26/04–23/05/2026','24/05–21/06/2026','22/06–21/07/2026',
+  '22/07–18/08/2026','19/08–16/09/2026','17/09–15/10/2026',
+  '16/10–13/11/2026','14/11–12/12/2026','13/12/2026–10/01/2027'
+];
+
+// Điểm tổng tháng
+var MSCORE=[8,9,6,5,3,6,6,8,9,8,9,8];
+var MGRADE=['✅ Tốt','⭐ Rất Tốt','〰 Trung Bình','⚠ Cẩn Thận','🔴 Xấu','〰 Trung Bình','〰 Trung Bình','✅ Tốt','⭐ Vàng','✅ Tốt','⭐ Rất Tốt','✅ Tốt'];
+
+// Mô tả tổng quan mỗi tháng
+var MOVERVIEW=[
+  // T1 Dần
+  {cls:'ov-kha',title:'Tháng 1 — Khởi đầu thuận lợi, được bề trên ủng hộ',
+   body:'Lưu nguyệt Dần kích Phụ Mẫu (Tử Vi Miếu + Thiên Phú Miếu) — đây là cung mạnh nhất trong lá số. Bề trên, nhà đầu tư, ngân hàng sẵn lòng hỗ trợ. Tam hợp Dần-Ngọ-Tuất kích toàn bộ bộ 3 tài lộc. Tết Bính Ngọ năm này khí tượng khởi đầu tốt cho gia chủ. <strong>Tháng phù hợp để gặp đối tác chiến lược, ký hợp đồng dài hạn, xin vay vốn.</strong>'},
+  // T2 Mão
+  {cls:'ov-tot',title:'Tháng 2 — Tháng phúc đức và quan hệ tốt nhất',
+   body:'Lưu nguyệt Mão kích Phúc Đức (Thái Âm + Hóa Khoa). Mão lục hợp Tuất (Tài Bạch) → tài chính được hỗ trợ tốt. Đây là tháng tốt nhất để xây dựng thương hiệu, tổ chức sự kiện quan hệ công chúng, gặp gỡ đối tác mới. Tâm trạng ổn định, có tin vui gia đình. <strong>Ký kết hợp đồng quan trọng tháng này.</strong>'},
+  // T3 Thìn
+  {cls:'ov-mid',title:'Tháng 3 — Trung bình, thận trọng với tài chính',
+   body:'Lưu nguyệt Thìn kích Điền Trạch (Tham Lang+Địa Kiếp) — cung hung. Thìn xung Tuất (Tài Bạch) gây biến động tài chính nhỏ. Thìn lục hợp Dậu (Tử Tức) tốt cho con cái. Tháng phù hợp tập trung công việc thường ngày, không triển khai dự án mới lớn.'},
+  // T4 Tị
+  {cls:'ov-warn',title:'Tháng 4 — Cẩn thận hôn nhân và bạn bè',
+   body:'Lưu nguyệt Tị kích Huynh Đệ (Phá Quân Miếu) — Phá Quân tính cách mạnh, hay phá vỡ. Tị <strong>xung Hợi (Phu Thê)</strong> — đây là tháng nguy hiểm nhất cho hôn nhân năm 2026. Tị tam hợp Sửu (Mệnh) + Dậu (Tử Tức): bản thân và con cái được kích tốt. Tham khảo file tháng 4 chi tiết để tra từng ngày.'},
+  // T5 Ngọ
+  {cls:'ov-xau',title:'Tháng 5 — Tháng xấu nhất năm, tránh mọi rủi ro lớn',
+   body:'Lưu nguyệt Ngọ kích trực tiếp Nô Bộc (Song Kỵ + Thái Tuế) — tổ hợp nguy hiểm nhất. Ngọ <strong>xung Tý (Quan Lộc)</strong> lần 2 — sự nghiệp bị tấn công kép. Tháng này: không ký hợp đồng quan trọng, không tranh luận công khai, kiểm tra lại tất cả hợp đồng đang chạy, cảnh giác nhân sự nội bộ. Tuyệt đối không bảo lãnh ai.'},
+  // T6 Mùi
+  {cls:'ov-mid',title:'Tháng 6 — Đi ngoài tốt hơn ở trong',
+   body:'Lưu nguyệt Mùi kích Thiên Di (Thiên Lương Đắc + Quốc Ân). Mùi <strong>xung Sửu (Mệnh)</strong> — bản thân chịu áp lực từ môi trường ngoài. Thiên Lương Đắc hóa giải. Tháng phù hợp đi công tác, mở rộng thị trường, gặp đối tác ngoài. Hạn chế tranh luận nội bộ.'},
+  // T7 Thân
+  {cls:'ov-mid',title:'Tháng 7 — Chú ý sức khỏe, không làm việc quá sức',
+   body:'Lưu nguyệt Thân kích Tật Ách (Thất Sát Miếu + Thiên Mã). Thân <strong>xung Dần (Phụ Mẫu)</strong> — bề trên/người bảo hộ gặp vấn đề nhỏ. Tháng tập trung sức khỏe: khám định kỳ, không làm việc quá 10h/ngày, tránh thể thao mạo hiểm. Tham Lang từ Điền Trạch hội chiếu Quan Lộc — thích hợp mở rộng network.'},
+  // T8 Dậu
+  {cls:'ov-kha',title:'Tháng 8 — Tốt cho quyết định kinh doanh và con cái',
+   body:'Lưu nguyệt Dậu kích Tử Tức (Vũ Khúc Miếu + Song Quyền). Dậu lục hợp Thìn nhẹ (Điền Trạch). <strong>Vũ Khúc Miếu + Quyền: tư duy tài chính sắc bén</strong> — đây là tháng ra quyết định kinh doanh quan trọng. Tin vui từ con cái. Thích hợp ký hợp đồng trung hạn, chốt thương vụ.'},
+  // T9 Tuất
+  {cls:'ov-tot',title:'Tháng 9 — Tháng thu tiền vàng nhất năm',
+   body:'Lưu nguyệt Tuất kích trực tiếp Tài Bạch (Bính Lộc + DV.Lộc Tồn + Thiên Mã). Đây là <strong>tháng vàng cho tài chính năm 2026</strong>. Tam hợp Dần-Ngọ-Tuất toàn phát: bề trên hỗ trợ, mạng lưới đóng góp, tiền chảy vào. <strong>Nên: chốt hợp đồng lớn, thu hồi công nợ, nhận đầu tư.</strong>'},
+  // T10 Hợi
+  {cls:'ov-kha',title:'Tháng 10 — Tháng tốt cho gia đình và hôn nhân',
+   body:'Lưu nguyệt Hợi kích Phu Thê (Thái Dương + Hóa Lộc B + Nguyệt Đức). Hợi <strong>xung Tị (Huynh Đệ/Phá Quân)</strong> — ít tiếp xúc bạn bè nhậu nhẹt, dành thời gian cho gia đình. <strong>Nên: du lịch vợ chồng, kỷ niệm, chia sẻ thành quả với vợ.</strong> Hợi tam hợp Mão (Phúc Đức) + Mùi (Thiên Di) → tâm hồn an lạc.'},
+  // T11 Tý
+  {cls:'ov-tot',title:'Tháng 11 — Sự nghiệp phục hồi và tỏa sáng',
+   body:'Lưu nguyệt Tý kích trực tiếp Quan Lộc (Cự Môn + Song Khoa + L.Lộc Tồn). Sau 7 tháng sóng gió, <strong>sự nghiệp tháng 11 âm là tháng phục hồi mạnh nhất</strong>. Tý <strong>xung Ngọ (Nô Bộc/Song Kỵ)</strong> — dùng để đối mặt dứt điểm vấn đề nhân sự. <strong>Nên: ký hợp đồng năm mới, công bố kết quả, tổ chức tổng kết.</strong>'},
+  // T12 Sửu
+  {cls:'ov-kha',title:'Tháng 12 — Kết năm với bản lĩnh và kế hoạch 2027',
+   body:'Lưu nguyệt Sửu kích trực tiếp Mệnh (Thiên Cơ Đắc + Song Quyền). Sửu <strong>xung Mùi (Thiên Di)</strong> — ít đi lại, ở nhà lên kế hoạch năm mới. Tam hợp Tị (Huynh Đệ) + Dậu (Tử Tức): cuối năm vui vẻ với gia đình. <strong>Tháng lập kế hoạch 2027, tổng kết năm, ký hợp đồng đầu năm sau.</strong>'},
+];
+
+// Chi tiết từng cung theo từng tháng (luận đoán)
+var CUNG_DETAIL = {
+  // [cung_key][month_0based] = {rel:[], nx:'', nen:'', khong:'', score:'tot|kha|mid|warn|xau'}
+};
+
+// Hàm tính quan hệ xung/hợp giữa lưu nguyệt và cung
+function calcRel(ln, cung){
+  var rels=[];
+  if(ln===cung) rels.push({cls:'rt-g',txt:'Trực Kích ⚡'});
+  if(isXung(ln,cung)) rels.push({cls:'rt-r',txt:'Xung ☇'});
+  if(isTamHop(ln,cung)) rels.push({cls:'rt-g',txt:'Tam Hợp ✦'});
+  if(isHop(ln,cung)) rels.push({cls:'rt-b',txt:'Lục Hợp ☯'});
+  if(!rels.length) rels.push({cls:'rt-m',txt:'Trung Lập'});
+  return rels;
+}
+
+// Tự động chấm điểm cung theo lưu nguyệt
+function scoreRel(ln, c){
+  var score=0;
+  var isHung=c.hung;
+  var isTot=c.tot;
+  if(ln===c.chi){ score += isHung ? -3 : 3; }
+  if(isXung(ln,c.chi)){ score -= isHung ? 2 : 3; }
+  if(isTamHop(ln,c.chi)){ score += isHung ? -1 : 2; }
+  if(isHop(ln,c.chi)){ score += 1; }
+  if(isTot) score+=1;
+  if(score>=4) return 'tot';
+  if(score>=2) return 'kha';
+  if(score>=-1) return 'mid';
+  if(score>=-3) return 'warn';
+  return 'xau';
+}
+
+// Sinh nhận xét chi tiết theo tháng và cung
+function genNX(ln, c, month){
+  var m=month+1; // tháng 1-based
+  var parts=[];
+  var isHung=c.hung;
+  var isTot=c.tot;
+
+  if(ln===c.chi){
+    if(isHung) parts.push('Lưu nguyệt T'+m+' ('+ln+') đóng trực tiếp vào '+c.ten+' — hung tinh bị kích, cần đặc biệt thận trọng suốt tháng này.');
+    else parts.push('Lưu nguyệt T'+m+' ('+ln+') đóng trực tiếp vào '+c.ten+' — cung được kích hoạt mạnh, sao chủ phát huy sức mạnh tối đa.');
+  }
+  if(isXung(ln,c.chi)){
+    parts.push('Lưu nguyệt '+ln+' xung vào cung '+c.ten+' ('+c.chi+') — toàn tháng cung này bị tác động tiêu cực, đặc biệt những ngày có chi ngày cũng xung.');
+  }
+  if(isTamHop(ln,c.chi)){
+    parts.push('Lưu nguyệt '+ln+' tam hợp với cung '+c.ten+' ('+c.chi+') — được hỗ trợ tốt trong tháng, sao chủ phối hợp tốt.');
+  }
+  if(isHop(ln,c.chi)){
+    parts.push('Lưu nguyệt '+ln+' lục hợp với chi '+c.chi+' ('+c.ten+') — quan hệ hài hòa, hỗ trợ nhẹ trong tháng.');
+  }
+  if(!parts.length){
+    parts.push('Lưu nguyệt T'+m+' không có quan hệ trực tiếp với '+c.ten+' — cung hoạt động bình thường theo sao bản mệnh.');
+  }
+  return parts.join(' ');
+}
+
+// Nên/Không nên theo cung
+var NEN={
+  menh:'Ra quyết định chiến lược, gặp đối tác quan trọng, thể hiện quyền lực lãnh đạo',
+  phumu:'Gặp bề trên, nhà đầu tư, ngân hàng; nhờ sự hỗ trợ của người lớn tuổi có uy tín',
+  phucduc:'Thư giãn, tĩnh tâm, làm từ thiện, chăm sóc bản thân, tổ chức sự kiện quan hệ',
+  dientrac:'Kiểm tra, bảo trì nhà cửa; không giao dịch bất động sản mới',
+  huynhde:'Duy trì quan hệ bạn bè lâu năm; không cho vay hoặc bảo lãnh',
+  noboc:'Kiểm tra, rà soát nội bộ; xây dựng quy trình quản lý; không tuyển người mới vội',
+  thiendi:'Đi công tác, mở rộng thị trường ngoài; gặp đối tác bên ngoài; xin giấy phép',
+  tatach:'Khám sức khỏe, tập thể dục; không làm việc quá sức',
+  tutuc:'Dành thời gian cho con; đầu tư giáo dục; khen ngợi khích lệ con',
+  taibac:'Thu tiền, chốt hợp đồng lớn; nhận đầu tư; tái cơ cấu dòng tiền',
+  phute:'Quan tâm vợ/chồng; du lịch đôi; chia sẻ tâm tư; mua quà ý nghĩa',
+  quanloc:'Dùng văn bản hợp đồng chặt; thuyết trình, đàm phán kỹ; không tranh luận bộc phát',
+};
+var KHONG={
+  menh:'Để cảm xúc chi phối quyết định; ký hợp đồng thiếu kiểm tra kỹ lưỡng',
+  phumu:'Tranh luận với bề trên; bỏ lỡ cơ hội nhận hỗ trợ từ người có ảnh hưởng',
+  phucduc:'Làm việc quá sức; để môi trường tiêu cực ảnh hưởng tâm trạng',
+  dientrac:'Mua nhà/đất; ký hợp đồng bất động sản; để người lạ vào nhà quản lý',
+  huynhde:'Cho mượn tiền lớn; hùn vốn với bạn; để bạn bè can thiệp chuyện gia đình',
+  noboc:'Bảo lãnh vay tiền; hùn vốn không hợp đồng; để 1 người kiểm soát tài chính toàn bộ',
+  thiendi:'Đi xa một mình không thông báo; tham gia hoạt động mạo hiểm',
+  tatach:'Làm việc >10h/ngày liên tục; leo núi/thể thao mạo hiểm; bỏ bữa ăn uống',
+  tutuc:'Kỷ luật quá nghiêm khi tâm trạng không tốt; so sánh con với người khác',
+  taibac:'Đầu tư chứng khoán/tiền ảo vốn lớn; mua bất động sản; chi tiêu không kế hoạch',
+  phute:'Tranh luận chuyện tiền bạc lúc căng thẳng; về trễ không báo trước; ít quan tâm vợ',
+  quanloc:'Tranh cãi công khai; kiện tụng không cần thiết; nói nhiều gây khẩu thiệt',
+};
+
+// ══════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════
+function renderMonth(m){
+  var idx=m-1;
+  var ln=LUU_NGUYET[idx];
+  var dl=DL[idx];
+  var ov=MOVERVIEW[idx];
+  var score=MSCORE[idx];
+  var grade=MGRADE[idx];
+
+  var scoreColor=score>=8?'#2ecc71':score>=7?'#5dade2':score>=6?'#f0b429':score>=5?'#e67e22':'#e74c3c';
+
+  var html='';
+  // Header
+  html+='<div class="mhdr">';
+  html+='<div class="mhdr-top"><div class="mhdr-left">';
+  html+='<h2>Tháng '+m+' Âm Lịch 2026 — Lưu Nguyệt: '+ln+'</h2>';
+  html+='<div class="dates">📅 Dương lịch: '+dl+'</div>';
+  html+='</div>';
+  html+='<div class="mhdr-score"><div class="ms-num" style="color:'+scoreColor+'">'+score+'</div><div class="ms-lbl">/ 10 · '+grade+'</div></div>';
+  html+='</div>';
+
+  // Tags
+  html+='<div class="mhdr-tags">';
+  html+='<span class="mt mt-y">Lưu Nguyệt: '+ln+'</span>';
+  CUNGS.forEach(function(c){
+    if(c.chi===ln) html+='<span class="mt mt-b">Đóng tại: '+c.ten+' ('+c.chi+')</span>';
+  });
+  // Xung của lưu nguyệt
+  CUNGS.forEach(function(c){
+    if(isXung(ln,c.chi)) html+='<span class="mt mt-r">Xung: '+c.ten+' ('+c.chi+')</span>';
+  });
+  html+='</div>';
+  html+='</div>'; // end mhdr
+
+  // Overview
+  html+='<div class="ovbox '+ov.cls+'">';
+  html+='<div class="ov-title">'+ov.title+'</div>';
+  html+='<div class="ov-body">'+ov.body+'</div>';
+  html+='</div>';
+
+  // Cung table
+  html+='<table class="ct"><tr>';
+  html+='<th width="15%">Cung</th>';
+  html+='<th width="18%">Quan Hệ<br>Lưu Nguyệt</th>';
+  html+='<th width="9%">Điểm</th>';
+  html+='<th width="58%">Phân Tích & Khuyến Cáo Tháng '+m+'</th>';
+  html+='</tr>';
+
+  CUNGS.forEach(function(c){
+    var rels=calcRel(ln,c.chi);
+    var sc=scoreRel(ln,c);
+    var trCls=sc==='tot'?'tr-tot':sc==='xau'||sc==='warn'?'tr-xau':sc==='mid'?'tr-mid':'';
+    var crCls='cr-'+sc;
+    var crTxt=sc==='tot'?'Rất Tốt':sc==='kha'?'Tốt':sc==='mid'?'Bình':sc==='warn'?'Cẩn Thận':'Xấu';
+    var nx=genNX(ln,c,idx);
+
+    html+='<tr class="'+trCls+'"><td>';
+    html+=c.icon+' <span class="cname">'+c.ten+'</span><span class="cchi">'+c.chi+'</span>';
+    html+='<div class="csao">'+c.sao+'</div>';
+    html+='</td><td>';
+    html+='<div class="rel-tags">';
+    rels.forEach(function(r){ html+='<span class="rt '+r.cls+'">'+r.txt+'</span>'; });
+    html+='</div>';
+    html+='</td><td><span class="crating '+crCls+'">'+crTxt+'</span></td>';
+    html+='<td><div class="cnx">'+nx+'</div>';
+    html+='<div class="nens">✅ Nên: '+NEN[c.key]+'</div>';
+    html+='<div class="khong">⛔ Không: '+KHONG[c.key]+'</div>';
+    html+='</td></tr>';
+  });
+
+  html+='</table>';
+
+  // Navigation
+  html+='<div style="display:flex;justify-content:space-between;margin-top:12px;font-size:12px">';
+  if(m>1) html+='<button onclick="clickTab('+(m-1)+')" style="background:var(--gold-lt);color:var(--amber);border:1px solid #d4aa50;border-radius:20px;padding:5px 14px;cursor:pointer;font-family:inherit;font-weight:600">← Tháng '+(m-1)+'</button>';
+  else html+='<span></span>';
+  if(m<12) html+='<button onclick="clickTab('+(m+1)+')" style="background:var(--gold-lt);color:var(--amber);border:1px solid #d4aa50;border-radius:20px;padding:5px 14px;cursor:pointer;font-family:inherit;font-weight:600">Tháng '+(m+1)+' →</button>';
+  else html+='<a href="index.html" style="background:var(--gold-lt);color:var(--amber);border:1px solid #d4aa50;border-radius:20px;padding:5px 14px;text-decoration:none;font-weight:600">← Trang Chủ</a>';
+  html+='</div>';
+
+  return html;
+}
+
+function showMonth(m, btn){
+  document.getElementById('m-root').innerHTML=renderMonth(m);
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function clickTab(m){
+  var tabs=document.querySelectorAll('.tab');
+  showMonth(m, tabs[m-1]);
+}
+
+// Init
+showMonth(1, document.querySelector('.tab'));
+</script>
+
+</div>
+</body>
+</html>
